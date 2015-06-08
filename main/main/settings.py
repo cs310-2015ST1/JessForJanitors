@@ -1,5 +1,5 @@
 """
-Django settings for Artly project.
+Django settings for main project.
 
 For more information on this file, see
 https://docs.djangoproject.com/en/1.7/topics/settings/
@@ -10,7 +10,6 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 
@@ -18,7 +17,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'vql!roh+&s2t600ku3kop@x97*a8)u2p1f5y^eiqd)=8rko9m='
+SECRET_KEY = '%z-ot9wnqb1mcasx-gzmzfwotfwa$+!)!$3n%$0nzun!-_qei+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -37,7 +36,6 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'artly',
 )
 
 MIDDLEWARE_CLASSES = (
