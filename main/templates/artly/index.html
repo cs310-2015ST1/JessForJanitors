@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+{% load staticfiles %} <!-- New line -->
+
+<html>
+    <head>
+        <title>Artly</title>
+    </head>
+
+    <body>
+        <h1>Artly says...hello world!</h1>
+
+        {% if artinstallations %}
+            <ul>
+                {% for artinstallation in artinstallations %}
+                <li>{{ artinstallation.name }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <strong>There are no categories present.</strong>
+        {% endif %}
+
+    </body>
+</html>
