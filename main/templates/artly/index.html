@@ -13,7 +13,7 @@
         {% if artinstallations %}
             <ul>
                 {% for artinstallation in artinstallations %}
-                <li>{{ artinstallation.name }}</li>
+                <li><a href="{{ artinstallation.url }}">{{ artinstallation.name }}</a></li>
                 {% endfor %}
             </ul>
         {% else %}

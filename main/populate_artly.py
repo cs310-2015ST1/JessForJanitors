@@ -24,9 +24,8 @@ def populate():
 
 
 def add_art(name, url):
-    a = ArtInstallation.objects.get_or_create(name=name)[0]
-    a.url=url
-    a.save()
+    a = ArtInstallation.objects.get_or_create(name=name, url=url)[0]
+    # a.save()
     return a
 
 # Start execution here!
