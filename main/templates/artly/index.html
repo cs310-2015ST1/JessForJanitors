@@ -15,9 +15,10 @@
                 {% for artinstallation in artinstallations %}
                 <li><a href="{{ artinstallation.url }}">{{ artinstallation.name }}</a></li>
                 {% endfor %}
+                <br/> <a href='/artly/map'>Map</a>
             </ul>
         {% else %}
-            <strong>There are no categories present.</strong>
+            <strong>There are no art installations present.</strong>
         {% endif %}
 
     </body>
