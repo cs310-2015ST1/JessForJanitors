@@ -83,7 +83,7 @@ def add_art(name, url, lat, lon):
     a.url = url
     a.lat = lat
     a.lon = lon
-    # a.save()
+    a.save()
     return a
 
 # Start execution here!
