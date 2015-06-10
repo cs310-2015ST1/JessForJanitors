@@ -53,6 +53,9 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'artly',
+    'registration',
+    'bootstrap_toolkit',
+    'googleapiclient',
 )
 
 MIDDLEWARE_CLASSES = (
