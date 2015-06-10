@@ -11,3 +11,6 @@ def index(request):
 
     # Render the response and send it back!
     return render(request, 'artly/index.html', context_dict)
+
+def map(request):
+    return render(request, 'artly/map.html')
