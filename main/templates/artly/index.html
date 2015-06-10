@@ -4,21 +4,50 @@
 
 <html>
     <head>
+        <link href="{% static 'css/bootstrap-fluid-adj.css'%} " rel="stylesheet">
+        <link href="{% static 'css/bootstrap.min.css'%} " rel="stylesheet" media="screen">
+        <link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet">
         <title>Artly</title>
     </head>
 
     <body>
-        <h1>Artly says...hello world!</h1>
 
-        {% if artinstallations %}
-            <ul>
-                {% for artinstallation in artinstallations %}
-                <li><a href="{{ artinstallation.url }}">{{ artinstallation.name }}</a></li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <strong>There are no categories present.</strong>
-        {% endif %}
+        <div class="container">
+            <h1>Artly</h1>
+            <h4>explore Vancouver through public art</h4>
+
+            {% if artinstallations %}
+            <table class="table table-hover"
+                   data-toggle="table"
+                   data-click-to-select="true"
+                   data-single-select="true">
+                    <tr>
+                        <th class="span1">Select</th>
+                        <th class="span1">Name</th>
+                        <th class="span1">Location</th>
+                        <th class="span1">Distance</th>
+                        <th class="span1">Info</th>
+                    </tr>
+                    {% for artinstallation in artinstallations %}
+                        <td><input type="checkbox" /></td>
+                        <td>{{ artinstallation.name }}</td>
+                        <td>
+                            <a href="https://www.google.com/maps/preview/@{{ artinstallation.lat }},{{ artinstallation.lon }},8z">
+                                {{ artinstallation.lat }}, {{ artinstallation.lon }}
+                            </a>
+                        </td>
+                        <td> 4.5km </td>
+                        <td><a href="{{ artinstallation.url }}"> → </a></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% else %}
+                <strong>There are no installations to present.</strong>
+            {% endif %}
+        </div>
 
     </body>
 </html>
+
+<!-- See http://bootstrap-table.wenzhixin.net.cn/examples/
+Search for checkbox select -->
