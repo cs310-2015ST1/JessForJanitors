@@ -13,4 +13,7 @@ def index(request):
     return render(request, 'artly/index.html', context_dict)
 
 def map(request):
-    return render(request, 'artly/map.html')
+    art_list = ArtInstallation.objects.order_by('-name')
+    context_dict = {'artinstallations': art_list}
+
+    return render(request, 'artly/map.html', context_dict)
