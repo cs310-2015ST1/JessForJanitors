@@ -2,6 +2,8 @@
 
 {% load staticfiles %} <!-- New line -->
 
+
+
 <html>
     <head>
         <link href="{% static 'css/bootstrap-fluid-adj.css'%} " rel="stylesheet">
@@ -11,15 +13,61 @@
         <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
         <script src="{% static 'js/artly-jquery.js' %}"></script>
         <title>Artly</title>
+
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas {float: left; height: 500px; width: 700px;}
+    </style>
+    <script type="text/javascript"
+     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnfkZ8FnyCfBkLpC6qCPEZpe_wLpT1lmE&sensor=false">
+    </script>
+    <script type="text/javascript">
+      function initialize() {
+        var mapOptions = {
+          center: new google.maps.LatLng(49.2508548,-123.1174762),
+          zoom: 12
+        };
+        var map = new google.maps.Map(document.getElementById("map-canvas"),
+            mapOptions);
+
+        var center = new google.maps.Circle({
+          strokeColor: '#FF0000',
+          strokeOpacity: 0.3,
+          fillColor: '#FF0000',
+          fillOpacity: 0.3,
+          map: map,
+          center: map.getCenter(),
+          radius: 2000,
+        })
+
+        {% for artinstallation in artinstallations %}
+        var marker = new google.maps.Marker({
+          position: {lat: {{artinstallation.lat}}, lng: {{artinstallation.lon}}},
+          icon: {
+            path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+            scale: 3,
+            strokeColor: "darkmagenta"
+          },
+          map: map
+        })
+        {% endfor %}
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
     </head>
-
     <body>
-
+   
         <div class="container">
-            <h1><a href="http://www.thefreedictionary.com/Artly">Artly</a></h1>
+            <h1>Artly</h1>
             <h4>explore Vancouver through public art</h4>
 
             {% if artinstallations %}
+
+            <div id="content">
+            <div id="map-canvas"></div>
+            <div id="datatable">
             <table class="table table-hover"
                    data-click-to-select="true">
                     <tr id="check-row">
@@ -43,12 +91,14 @@
                     </tr>
                     {% endfor %}
                 </table>
+                </div>
+                </div>
             {% else %}
                 <strong>There are no installations to present.</strong>
             {% endif %}
         </div>
-
     </body>
+
 </html>
 
 <!-- See http://bootstrap-table.wenzhixin.net.cn/examples/
