@@ -17,18 +17,34 @@
     <style type="text/css">
       html { height: 100% }
       body { height: 100%; margin: 0; padding: 0 }
-      #map-canvas {float: left; height: 500px; width: 700px;}
+      #map-canvas {float: left; height: 500px; width: 50%;}
     </style>
     <script type="text/javascript"
      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnfkZ8FnyCfBkLpC6qCPEZpe_wLpT1lmE&sensor=false">
     </script>
     <script type="text/javascript">
+      var map;
+      
+      function plotPosition(position) {
+    	userPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    	var userMarker = new google.maps.Marker({
+    		position: userPosition,
+    		icon: {
+	            path: google.maps.SymbolPath.BACKWARD_CLOSED_ARROW,
+	            scale: 3,
+	            strokeColor: "blue"
+          	},
+          	map: map
+      	})	
+	  }
+	  
       function initialize() {
         var mapOptions = {
           center: new google.maps.LatLng(49.2508548,-123.1174762),
           zoom: 12
         };
-        var map = new google.maps.Map(document.getElementById("map-canvas"),
+
+        map = new google.maps.Map(document.getElementById("map-canvas"),
             mapOptions);
 
         var center = new google.maps.Circle({
@@ -40,7 +56,13 @@
           center: map.getCenter(),
           radius: 2000,
         })
-
+        
+        if (navigator.geolocation) {
+        	navigator.geolocation.getCurrentPosition(plotPosition);
+   		} else { 
+   			window.alert("Geolocation is not supported by this browser.");
+		}
+		
         {% for artinstallation in artinstallations %}
         var marker = new google.maps.Marker({
           position: {lat: {{artinstallation.lat}}, lng: {{artinstallation.lon}}},
@@ -57,11 +79,11 @@
     </script>
     </head>
     <body>
-   
+    	<div id="header">
+        <h1>Artly</h1>
+        <h4>explore Vancouver through public art</h4>
+        </div>
         <div class="container">
-            <h1>Artly</h1>
-            <h4>explore Vancouver through public art</h4>
-
             {% if artinstallations %}
             
             <div id="content">
