@@ -18,8 +18,8 @@ content = kml.read()
 root = ElementTree.fromstring(content)
 allplacemarks = root[0][4].findall('{http://earth.google.com/kml/2.2}Placemark')
 print allplacemarks
-for child in allplacemarks.findall('name'):
-    name = child.text
+for child in allplacemarks:
+    name = child.findall('{http://earth.google.com/kml/2.2}name')
     print name
 
 # root = parser.fromstring(content)
