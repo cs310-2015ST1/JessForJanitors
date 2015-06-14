@@ -12,6 +12,7 @@
         <link href="{% static 'css/artly-css.css' %}" rel="stylesheet">
         <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
         <script src="{% static 'js/artly-jquery.js' %}"></script>
+        <script src="{% static 'js/artly-ajax.js' %}"></script>
 
         <title>Artly</title>
 
@@ -80,10 +81,10 @@
                     </tr>
                     {% for artinstallation in artinstallations %}
                     <tr id="check-row">
-                        <td><center><input type="checkbox" /></center></td>
+                        <td><center><input type="checkbox" id="select" /></center></td>
                         <td>{{ artinstallation.name }}</td>
                         <td>
-                            <a href="https://www.google.com/maps/preview/@{{ artinstallation.lat }},{{ artinstallation.lon }},15z" target="_blank" id="no-check">
+                            <a href="https://www.google.com/maps?q=loc:{{ artinstallation.lat }},{{ artinstallation.lon }}" target="_blank" id="no-check">
                                 {{ artinstallation.lat }}, {{ artinstallation.lon }}
                             </a>
                         </td>
