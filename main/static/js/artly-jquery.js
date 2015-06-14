@@ -1,6 +1,6 @@
 $(document).ready(function () {
     $(".table-hover tr").click(function (event) {
-        if (event.target.type !== 'checkbox') {
+        if (event.target.id !== 'no-check' && event.target.type !== 'checkbox') {
             $(':checkbox', this).trigger('click');
         }
     });

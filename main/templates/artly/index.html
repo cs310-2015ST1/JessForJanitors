@@ -83,12 +83,12 @@
                         <td><center><input type="checkbox" /></center></td>
                         <td>{{ artinstallation.name }}</td>
                         <td>
-                            <a href="https://www.google.com/maps/preview/@{{ artinstallation.lat }},{{ artinstallation.lon }},15z" target="_blank">
+                            <a href="https://www.google.com/maps/preview/@{{ artinstallation.lat }},{{ artinstallation.lon }},15z" target="_blank" id="no-check">
                                 {{ artinstallation.lat }}, {{ artinstallation.lon }}
                             </a>
                         </td>
                         <td> 4.5km </td>
-                        <td><a href="{{ artinstallation.url }}" target="_blank"> → </a></td>
+                        <td><a href="{{ artinstallation.url }}" target="_blank" id="no-check"> → </a></td>
                     </tr>
                     {% endfor %}
                 </table>
