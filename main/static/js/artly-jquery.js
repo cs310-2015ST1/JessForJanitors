@@ -1,3 +1,4 @@
+/*
 $(document).ready(function () {
     $(".table-hover tr").click(function (event) {
         if (event.target.id !== 'no-check' && event.target.type !== 'checkbox') {
@@ -13,3 +14,4 @@ $(document).ready(function () {
         }
     });
 });
+*/

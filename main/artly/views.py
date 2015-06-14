@@ -11,3 +11,22 @@ def index(request):
 
     # Render the response and send it back!
     return render(request, 'artly/index.html', context_dict)
+
+def click_installation(request):
+    installation_name = None
+    if request.method == 'GET':
+        installation_name = request.GET['name']
+
+    if installation_name:
+
+        # get the installation
+        installation = ArtInstallation.objects.get(name=str(installation_name))
+
+        # flip the installation's selected boolean
+        if installation:
+            if installation.selected:
+                installation.selected = False
+            else:
+                installation.selected = True
+
+    return HttpResponse(installation.name)
