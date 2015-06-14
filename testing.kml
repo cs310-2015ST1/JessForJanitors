@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<kml xmlns="http://earth.google.com/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<Schema name="Public_Art_Individual_Location" id="Public_Art_Individual_Location">
+		<SimpleField type="string" name="NAME"/>
+		<SimpleField type="string" name="TITLE"/>
+		<SimpleField type="string" name="URL_LINK"/>
+	</Schema>
+	<Style id="KMLStyler">
+		<IconStyle>
+			<color>ff00ffff</color>
+			<colorMode>normal</colorMode>
+			<scale>0.5</scale>
+			<Icon>
+				<href>images/H4.png</href>
+			</Icon>
+		</IconStyle>
+		<LabelStyle>
+		</LabelStyle>
+		<LineStyle>
+			<color>ff626262</color>
+			<colorMode>normal</colorMode>
+			<width>3</width>
+		</LineStyle>
+		<PolyStyle>
+		<colorMode>normal</colorMode>
+		</PolyStyle>
+	</Style>
+<name>public_art_individual_locations</name>
+<visibility>1</visibility>
+<Folder id="kml_ft_Public_Art_Individual_Location">
+<name>Public_Art_Individual_Location</name>
+<Placemark id="kml_1">
+<Snippet> </Snippet>
+<description>Attributes:
+NAME:
+TITLE:Royal Sweet Diamond
+URL_LINK:&lt;a href='https://app.vancouver.ca/PublicArt_Net/ArtworkDetails.aspx?ArtworkID=380&amp;Neighbourhood=&amp;Ownership=&amp;Program='&gt;&lt;/a&gt;
+</description>
+<styleUrl>#KMLStyler</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Public_Art_Individual_Location">
+<SimpleData name="NAME"></SimpleData>
+<SimpleData name="TITLE">Royal Sweet Diamond</SimpleData>
+<SimpleData name="URL_LINK">&lt;a href='https://app.vancouver.ca/PublicArt_Net/ArtworkDetails.aspx?ArtworkID=380&amp;Neighbourhood=&amp;Ownership=&amp;Program='&gt;&lt;/a&gt;</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>-123.115823,49.281273,0 </coordinates>
+</Point>
+</Placemark>
+<Placemark id="kml_2">
+<name>Ridgeway Greenway</name>
+<Snippet> </Snippet>
+<description>Attributes:
+NAME:Ridgeway Greenway
+TITLE:Machina Metronoma (South Cambie neighbourhood)
+URL_LINK:&lt;a href='https://app.vancouver.ca/PublicArt_Net/ArtworkDetails.aspx?ArtworkID=382&amp;Neighbourhood=&amp;Ownership=&amp;Program='&gt;Ridgeway Greenway&lt;/a&gt;
+</description>
+<styleUrl>#KMLStyler</styleUrl>
+<ExtendedData>
+<SchemaData schemaUrl="#Public_Art_Individual_Location">
+<SimpleData name="NAME">Ridgeway Greenway</SimpleData>
+<SimpleData name="TITLE">Machina Metronoma (South Cambie neighbourhood)</SimpleData>
+<SimpleData name="URL_LINK">&lt;a href='https://app.vancouver.ca/PublicArt_Net/ArtworkDetails.aspx?ArtworkID=382&amp;Neighbourhood=&amp;Ownership=&amp;Program='&gt;Ridgeway Greenway&lt;/a&gt;</SimpleData>
+</SchemaData>
+</ExtendedData>
+<Point>
+<coordinates>-123.116352,49.237256,0 </coordinates>
+</Point>
+</Placemark>
+</Folder>
+</Document>
+</kml>
