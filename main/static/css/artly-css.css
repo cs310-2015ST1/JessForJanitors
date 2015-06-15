@@ -1,0 +1,36 @@
+.table td.checkbox,
+.table th.checkbox {
+    float: none;
+    width: 10px;
+    margin-left: 0;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#datatable {
+	width: 400px;
+	float: left;
+	padding-left: 0px;
+	height: 500px;
+	overflow: scroll;
+	margin: 0;
+	padding-bottom: 0;
+	padding-top: 0;
+}
+
+#content {
+	padding-top: 1%;
+}
+
+#map-canvas {
+    float: left;
+    height: 500px;
+    width: 700px;
+}
+
+#selection {
+    float: middle;
+    padding-top: 100;
+    height: 50px;
+    width: 700px;
+}
