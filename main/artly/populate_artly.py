@@ -1,4 +1,6 @@
 import os
+from django.http import HttpResponse
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'main.settings')
 
 import django
@@ -6,7 +8,11 @@ django.setup()
 
 from artly.models import ArtInstallation
 
-def populate():
+# To return number of installations in database
+num_installations = 0
+
+# Had to put an x in here for it to work
+def populate(x):
 
     add_art(name="Royal Sweet Diamond",
             url="https://app.vancouver.ca/PublicArt_Net/ArtworkDetails.aspx?ArtworkID=380&amp;Neighbourhood=&amp;Ownership=&amp;Program='&gt;&lt;/a&gt;",
@@ -73,15 +79,23 @@ def populate():
             lat=49.28967,
             lon=-123.123477)
 
+    global num_installations
+    response = "Success! Welcome to the Artly Art Installation Databse, population: " + str(num_installations)
+    num_installations = 0
+    return HttpResponse(response)
+
     # Print out what we have added to the user.
     for c in ArtInstallation.objects.all():
         print "- {0}".format(str(c))
 
 def add_art(name, lat, lon, url):
+    # add 1 to number of installations added
+    global num_installations
+    num_installations += 1
     a = ArtInstallation.objects.get_or_create(name=name, url=url, lat=lat, lon=lon)[0]
     return a
 
-# Start execution here!
+# Code below is not needed for button implementation
 if __name__ == '__main__':
     print "Starting Artly population script..."
     populate()
