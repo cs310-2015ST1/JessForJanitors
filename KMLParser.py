@@ -19,17 +19,18 @@ description_tag = "{http://earth.google.com/kml/2.2}description"
 coordinates_tag = "{http://earth.google.com/kml/2.2}coordinates"
 
 placemark = root[0][4]
-
-print placemark.tag
-
-for placemark_child in placemark.iter():
+'''
+print root[0][4][1].tag
+for placemark_child in root[0][4][1].iter():
     print placemark_child
-
+'''
 for placemark_child in placemark.iter():
     if placemark_child.tag == simple_data_tag:
         if placemark_child.get('name') == 'TITLE':
             print placemark_child.text
         if placemark_child.get('name') == 'URL_LINK':
-            print placemark_child.text
+            print placemark_child.text[9:-6]
     if placemark_child.tag == coordinates_tag:
-        print "Coordinates: " + placemark_child.text
+        coordinates = placemark_child.text
+        print "Latitude: " + coordinates[0:11]
+        print "Longitude: " + coordinates[12:21]
