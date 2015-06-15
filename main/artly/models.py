@@ -1,7 +1,8 @@
 from django.db import models
 
 class ArtInstallation(models.Model):
-    name = models.CharField(max_length=128, unique=True)
+    locationid = models.CharField(max_length=128, unique=True)
+    name = models.CharField(max_length=128)
     url = models.URLField(default="http://www.google.com/")
     lat =  models.FloatField(default=49.2508548)
     lon = models.FloatField(default=-123.1174762)

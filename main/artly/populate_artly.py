@@ -18,6 +18,8 @@ num_installations = 0
 # Had to put an x in here for it to work
 def populate(x):
 
+    id = 1
+
     url = 'http://data.vancouver.ca/download/kml/public_art_individual_locations.kmz'
     filename = 'public_art_individual_locations.kml'
 
@@ -44,7 +46,8 @@ def populate(x):
             second_comma = coordinates.find(',',first_comma+1)
             lon = coordinates[0:first_comma]
             lat = coordinates[first_comma+1:second_comma]
-            add_art(name, lat, lon, url)
+            add_art("loc_"+str(id),name, lat, lon, url)
+            id+=1
 
 
     global num_installations
@@ -56,11 +59,11 @@ def populate(x):
     for c in ArtInstallation.objects.all():
         print "- {0}".format(str(c))
 
-def add_art(name, lat, lon, url):
+def add_art(locationid, name, lat, lon, url):
     # add 1 to number of installations added
     global num_installations
     num_installations += 1
-    a = ArtInstallation.objects.get_or_create(name=name, url=url, lat=lat, lon=lon)[0]
+    a = ArtInstallation.objects.get_or_create(locationid=locationid, name=name, url=url, lat=lat, lon=lon, selected = False)[0]
     return a
 
 # Code below is not needed for button implementation
