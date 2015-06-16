@@ -29,7 +29,11 @@
 }
 
 #radius-dropdown {
-	padding-left: 825px;
+	padding-left: 950px;
+}
+
+#radius-menu-option {
+	width: 100px;
 }
 
 #selection {
