@@ -38,11 +38,11 @@
                         var infowindow = new google.maps.InfoWindow({
                             map: map,
                             position: pos,
-                            content: 'Current location found using HTML5.'
+                            content: 'Current location.'
                         });
 
                         map.setCenter(pos);
-                        initalize_DW();
+                        plotWidgets();
                     }, function () {
                         handleNoGeolocation(true);
                     });
@@ -66,10 +66,10 @@
 
                     var infowindow = new google.maps.InfoWindow(options);
                     map.setCenter(options.position);
-                    initalize_DW();
+                    plotWidgets();
                 }
 
-                function initalize_DW() {
+                function plotWidgets() {
                     var distanceWidget = new DistanceWidget(map);
                     google.maps.event.addListener(distanceWidget, 'distance_changed', function () {
                         displayInfo(distanceWidget);
@@ -78,6 +78,18 @@
                     google.maps.event.addListener(distanceWidget, 'position_changed', function () {
                         displayInfo(distanceWidget);
                     });
+
+                    {% for artinstallation in artinstallations %}
+                    var marker = new google.maps.Marker({
+                        position: {lat: {{artinstallation.lat}}, lng: {{artinstallation.lon}}},
+                        icon: {
+                            path: google.maps.SymbolPath.CIRCLE,
+                            scale: 3,
+                            strokeColor: "#4884AB"
+                            },
+                        map: map
+                        })
+                    {% endfor %}
                 }
             }
             /**
@@ -95,7 +107,7 @@
                 var marker = new google.maps.Marker({
                     icon: {
                         path: google.maps.SymbolPath.CIRCLE,
-                        scale: 3
+                        scale: 8
                     },
                     draggable: true,
                     title: 'Move me to change your current position'
