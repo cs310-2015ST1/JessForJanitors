@@ -1,3 +1,5 @@
+# OLD BROKEN CODE. DO NOT USE.
+
 import zipfile
 import urllib
 import xml.etree.ElementTree as ET
@@ -10,7 +12,7 @@ filename = 'public_art_individual_locations.kml'
 fileobject, _ = urllib.urlretrieve(url)
 kmz = zipfile.ZipFile(fileobject, 'r')
 kml = kmz.open(filename, 'r')
-tree = ET.parse("testing.kml")
+tree = ET.parse(kml)
 root = tree.getroot()
 
 placemark_tag = "{http://earth.google.com/kml/2.2}Placemark"

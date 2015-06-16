@@ -51,7 +51,7 @@ def populate(x):
 
 
     global num_installations
-    response = "Success! Welcome to the Artly Art Installation Databse, population: " + str(num_installations)
+    response = "Success! Welcome to the Artly Art Installation Database, population: " + str(num_installations)
     num_installations = 0
     return HttpResponse(response)
 
