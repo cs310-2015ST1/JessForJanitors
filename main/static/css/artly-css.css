@@ -28,6 +28,10 @@
     width: 700px;
 }
 
+#radius-dropdown {
+	padding-left: 825px;
+}
+
 #selection {
     float: middle;
     padding-top: 100;

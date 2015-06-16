@@ -98,6 +98,16 @@
             {% if artinstallations %}
 
             <div id="content">
+            <div id="radius-dropdown">
+            Radius:
+            <select>
+        		<option value="1000">1 km</option>
+        		<option value="2000" selected>2 km</option>
+        		<option value="3000">3 km</option>
+        		<option value="4000">4 km</option>
+        		<option value="5000">5 km</option>
+        	</select>
+        	</div>
             <div id="map-canvas"></div>
             <div id="datatable">
             <table class="table table-hover"
