@@ -40,10 +40,6 @@
           radius: 2000,
         })
         {% for artinstallation in artinstallations %}
-        var contentString = {artinstallation.name, artinstallation.url};
-        var infowindow = new google.maps.InfoWindow({
-      		content: contentString
- 		 });
         var marker = new google.maps.Marker({
           position: {lat: {{artinstallation.lat}}, lng: {{artinstallation.lon}}},
           icon: {
@@ -53,12 +49,8 @@
           },
           map: map
         })
-        google.maps.event.addListener(marker, 'click', function() {
-    		infowindow.open(map,marker);
-  			});
         {% endfor %}
 	  }
-
       function initialize() {
         if (navigator.geolocation) {
         	navigator.geolocation.getCurrentPosition(plotPosition);
@@ -78,26 +70,23 @@
             {% if artinstallations %}
 
             <div id="content">
+            <div id="radius-dropdown">
+            Radius:
+            <select>
+        		<option value="1000">1 km</option>
+        		<option value="2000" selected>2 km</option>
+        		<option value="3000">3 km</option>
+        		<option value="4000">4 km</option>
+        		<option value="5000">5 km</option>
+        	</select>
+        	</div>
             <div id="map-canvas"></div>
-            <!-- Just an arbitrary place to put the dropdown menu for distance selection -->
-				<br>
-                <div id="content">
-                Radius:
-            	<select>
-        			<option value="1000">1 km</option>
-        			<option value="2000" selected>2 km</option>
-        			<option value="3000">3 km</option>
-        			<option value="4000">4 km</option>
-        			<option value="5000">5 km</option>
-        		</select>
-        		</div>
             <div id="datatable">
             <table class="table table-hover"
                    data-click-to-select="true">
                     <tr id="check-row">
                         <th class="span1"></th>
                         <th class="span1">Name</th>
-                        <th class="span1">Location</th>
                         <th class="span1">Distance</th>
                         <th class="span1">Info</th>
                     </tr>
@@ -105,10 +94,6 @@
                     <tr id="check-row">
                         <td><center><input type="checkbox" id="select" data-installation-name="{{ artinstallation.name }}" /></center></td>
                         <td>{{ artinstallation.name }}</td>
-                        <td>
-                        	<a href="https://www.google.com/maps?q=loc:{{ artinstallation.lat }},{{ artinstallation.lon }}" target="_blank" id="no-check">
-                        	{{ artinstallation.lat }}, {{ artinstallation.lon }}</a>		
--                       </td>
                         <td> 4.5km </td>
                         <td><a href="{{ artinstallation.url }}" target="_blank" id="no-check"> → </a></td>
                     </tr>
@@ -120,16 +105,14 @@
                 <strong>There are no installations to present.</strong>
             {% endif %}
 
-
         </div>
 
         <div class="container">
             <!-- for testing purposes-->
             <div id="selection">
                 <span id="installation_name"></span><i> was clicked</i>
-                
             </div>
-            
+
         </div>
 
     </body>
