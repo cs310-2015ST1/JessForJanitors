@@ -22,7 +22,6 @@
     </script>
         <script type="text/javascript">
       var map;
-
       function plotPosition(position) {
     	userPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
         var mapOptions = {
@@ -41,6 +40,10 @@
           radius: 2000,
         })
         {% for artinstallation in artinstallations %}
+        var contentString = {artinstallation.name, artinstallation.url};
+        var infowindow = new google.maps.InfoWindow({
+      		content: contentString
+ 		 });
         var marker = new google.maps.Marker({
           position: {lat: {{artinstallation.lat}}, lng: {{artinstallation.lon}}},
           icon: {
@@ -50,6 +53,9 @@
           },
           map: map
         })
+        google.maps.event.addListener(marker, 'click', function() {
+    		infowindow.open(map,marker);
+  			});
         {% endfor %}
 	  }
 
