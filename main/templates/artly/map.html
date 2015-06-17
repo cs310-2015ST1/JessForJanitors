@@ -26,10 +26,11 @@
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnfkZ8FnyCfBkLpC6qCPEZpe_wLpT1lmE&sensor=false">
         </script>
         <script type="text/javascript">
+            var map;
+            var distanceWidget;
 
             function init() {
-                var map = new google.maps.Map(document.getElementById('map-canvas'), {zoom: 12});
-                var distanceWidget;
+                map = new google.maps.Map(document.getElementById('map-canvas'), {zoom: 12});
 
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
@@ -68,29 +69,61 @@
                     map.setCenter(options.position);
                     plotWidgets();
                 }
+            }
 
-                function plotWidgets() {
-                    var distanceWidget = new DistanceWidget(map);
-                    google.maps.event.addListener(distanceWidget, 'distance_changed', function () {
-                        displayInfo(distanceWidget);
-                    });
+            function distance(lat1, lon1, lat2, lon2) {
+                var radlat1 = Math.PI * lat1/180
+                var radlat2 = Math.PI * lat2/180
+                var radlon1 = Math.PI * lon1/180
+                var radlon2 = Math.PI * lon2/180
+                var theta = lon1-lon2
+                var radtheta = Math.PI * theta/180
+                var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+                dist = Math.acos(dist)
+                dist = dist * 180/Math.PI
+                dist = dist * 60 * 1.1515
+                dist = dist * 1.609344
+                return dist * 1000
+            }
 
-                    google.maps.event.addListener(distanceWidget, 'position_changed', function () {
-                        displayInfo(distanceWidget);
-                    });
+            function updateListView(){
+                {% for artinstallation in artinstallations %}
+                var distan = distance(map.getCenter().lat(), map.getCenter().lng(), {{artinstallation.lat}}, {{artinstallation.lon}})
+                //window.alert(distance(position.coords.latitude, position.coords.longitude, {{artinstallation.lat}}, {{artinstallation.lon}}));
 
-                    {% for artinstallation in artinstallations %}
+                var distan_round = Math.round(distan);
+                var distan_string = distan_round.toString()
+                $(".distance-{{artinstallation.locationid}}").html(distan_string);
+
+                if (distan > radius) {
+                    $('.{{artinstallation.locationid}}').hide();
+                }
+                {% endfor %}
+            }
+
+
+            function plotWidgets() {
+                distanceWidget = new DistanceWidget(map);
+                google.maps.event.addListener(distanceWidget, 'distance_changed', function () {
+                    displayInfo(distanceWidget);
+                });
+
+                google.maps.event.addListener(distanceWidget, 'position_changed', function () {
+                    displayInfo(distanceWidget);
+                });
+
+                {% for artinstallation in artinstallations %}
                     var marker = new google.maps.Marker({
-                        position: {lat: {{artinstallation.lat}}, lng: {{artinstallation.lon}}},
+                        position: {lat: {{ artinstallation.lat }}, lng: {{ artinstallation.lon }}},
                         icon: {
                             path: google.maps.SymbolPath.CIRCLE,
-                            scale: 3,
-                            strokeColor: "#4884AB"
-                            },
+                            scale:3,
+                            strokeColor:"#4884AB"},
                         map: map
-                        })
-                    {% endfor %}
-                }
+                    })
+                {% endfor %}
+
+                updateListView();
             }
             /**
             * A distance widget that will display a circle that can be resized and will
@@ -107,7 +140,7 @@
                 var marker = new google.maps.Marker({
                     icon: {
                         path: google.maps.SymbolPath.CIRCLE,
-                        scale: 8
+                        scale: 5
                     },
                     draggable: true,
                     title: 'Move me to change your current position'
@@ -136,6 +169,10 @@
              */
             function RadiusWidget() {
                 var circle = new google.maps.Circle({
+                    strokeColor: '#7E5CD6',
+                    strokeOpacity: 0.4,
+                    fillColor: '#7E5CD6',
+                    fillOpacity: 0.3,
                     strokeWeight: 2
                 });
 
@@ -167,7 +204,7 @@
              */
             RadiusWidget.prototype.addSizer_ = function() {
                 var sizer = new google.maps.Marker({
-
+                    icon: 'http://i.imgur.com/7NP3s7f.png',
                     draggable: true,
                     title: 'Drag me to change your search radius.'
                 });
