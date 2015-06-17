@@ -1,17 +1,3 @@
-/*
-$(document).ready(function () {
-    $(".table-hover tr").click(function (event) {
-        if (event.target.id !== 'no-check' && event.target.type !== 'checkbox') {
-            $(':checkbox', this).trigger('click');
-        }
-    });
-
-    $("input[type='checkbox']").change(function (e) {
-        if ($(this).is(":checked")) {
-            $(this).closest('tr').addClass("success");
-        } else {
-            $(this).closest('tr').removeClass("success");
-        }
-    });
+$(document).ready(function() {
+$("#example").DataTable( {paging: false,scrollY: 400, order: [[ 2, "asc" ]]} );
 });
-*/

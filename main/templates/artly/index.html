@@ -13,6 +13,8 @@
         <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
         <!-- <script src="{% static 'js/artly-jquery.js' %}"></script> -->
         <script src="{% static 'js/artly-ajax.js' %}"></script>
+        <link rel="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css"></link>
+        <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
 
         <title>Artly</title>
 
@@ -55,7 +57,7 @@
         //window.alert(distance(position.coords.latitude, position.coords.longitude, {{artinstallation.lat}}, {{artinstallation.lon}}));
 
         var distan_round = Math.round(distan);
-        var distan_string = distan_round.toString() + " m"
+        var distan_string = distan_round.toString()
         $(".distance-{{artinstallation.locationid}}").html(distan_string);
 
         if (distan > radius) {
@@ -124,15 +126,17 @@
         	</div>
             <div id="map-canvas"></div>
             <div id="datatable">
-            <table class="table table-hover"
-                   data-click-to-select="true">
-                    <tr id="check-row">
+            <table id="example" class="table table-hover" data-click-to-select="true">
+                <thead>
+                <tr id="check-row">
                         <th class="span1"></th>
                         <th class="span1">Name</th>
-                        <th class="span1">Distance</th>
+                        <th class="span1">Distance (m)</th>
                         <th class="span1">Info</th>
                     </tr>
-                    {% for artinstallation in artinstallations %}
+                </thead>
+                <tbody>
+                {% for artinstallation in artinstallations %}
                     <tr id="check-row" class="{{artinstallation.locationid}}">
                         <td><center><input type="checkbox" id="select" data-installation-name="{{ artinstallation.name }}" /></center></td>
                         <td>{{ artinstallation.name }}</td>
@@ -140,6 +144,7 @@
                         <td><a href="{{ artinstallation.url }}" target="_blank" id="no-check"> → </a></td>
                     </tr>
                     {% endfor %}
+                </tbody>
                 </table>
                 </div>
                 </div>
@@ -148,6 +153,8 @@
             {% endif %}
 
         </div>
+
+        <!-- <button onclick='$("#example").DataTable( {paging: false,scrollY: 400, order: [[ 2, "asc" ]]} );'>Click me</button> -->
 
         <div class="container">
             <!-- for testing purposes-->
