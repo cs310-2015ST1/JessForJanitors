@@ -17,8 +17,7 @@
 }
 
 #datatable {
-	width: 500px;
-	float: left;
+	width: 450px;
 	padding-left: 30px;
 	height: 500px;
 	overflow: scroll;
@@ -34,7 +33,7 @@
 #map-canvas {
     float: left;
     height: 500px;
-    width: 700px;
+	width: calc(100% - 600px); //readjusts based on screen size
 }
 
 #radius-dropdown {
