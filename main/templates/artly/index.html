@@ -3,7 +3,6 @@
 {% load staticfiles %} <!-- New line -->
 
 
-
 <html>
     <head>
         <link href="{% static 'css/bootstrap-fluid-adj.css'%} " rel="stylesheet">
@@ -11,109 +10,244 @@
         <link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet">
         <link href="{% static 'css/artly-css.css' %}" rel="stylesheet">
         <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+        <!-- <script src="{% static 'js/artly-jquery.js' %}"></script> -->
         <script src="{% static 'js/artly-ajax.js' %}"></script>
-        <!--<script src="{% static 'js/artly-jquery.js' %}"></script>-->
-        <!--<link rel="//cdn.datatables.net/1.10.7/css/jquery.dataTables.min.css"></link>-->
-        <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
 
-        <title>Artly</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+        <title>Artly with MVC Radius</title>
 
-    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <script type="text/javascript"
-     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnfkZ8FnyCfBkLpC6qCPEZpe_wLpT1lmE&sensor=false">
-    </script>
-    <script type="text/javascript">
-      var map;
+        <style type="text/css">
+            #map-canvas {
+                height: 500px;
+            }
+        </style>
 
-      function plotPosition(position) {
-    	userPosition = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-        var mapOptions = {
-          center: userPosition,
-          zoom: 12
-        };
-		var radius = 2000.0;
+        <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnfkZ8FnyCfBkLpC6qCPEZpe_wLpT1lmE&sensor=false">
+        </script>
+        <script type="text/javascript">
+            var map;
+            var distanceWidget;
 
-		// var radius = document.getElementById("radiusMenuOption").value;
-        // http://www.geodatasource.com/developers/javascript
-        function distance(lat1, lon1, lat2, lon2) {
-			var radlat1 = Math.PI * lat1/180
-			var radlat2 = Math.PI * lat2/180
-			var radlon1 = Math.PI * lon1/180
-			var radlon2 = Math.PI * lon2/180
-			var theta = lon1-lon2
-			var radtheta = Math.PI * theta/180
-			var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-			dist = Math.acos(dist)
-			dist = dist * 180/Math.PI
-			dist = dist * 60 * 1.1515
-			dist = dist * 1.609344
-			return dist * 1000
-        }
-        {% for artinstallation in artinstallations %}
-        var distan = distance(position.coords.latitude, position.coords.longitude, {{artinstallation.lat}}, {{artinstallation.lon}})
-        //window.alert(distance(position.coords.latitude, position.coords.longitude, {{artinstallation.lat}}, {{artinstallation.lon}}));
-        var distan_round = Math.round(distan);
-        $(".distance-{{artinstallation.locationid}}").html(distan_round);
-        if (distan > radius) {
-            $('.{{artinstallation.locationid}}').hide();
-        }
-        else if (distan <= radius) {
-            $('.{{artinstallation.locationid}}').show();
-        }
-        {% endfor %}
+            function init() {
+                map = new google.maps.Map(document.getElementById('map-canvas'), {zoom: 12});
 
-        map = new google.maps.Map(document.getElementById("map-canvas"),
-            mapOptions);
-        var center = new google.maps.Circle({
-          strokeColor: '#7E5CD6',
-          strokeOpacity: 0.4,
-          fillColor: '#7E5CD6',
-          fillOpacity: 0.3,
-          map: map,
-          center: map.getCenter(),
-          radius: radius,
-        })
-        {% for artinstallation in artinstallations %}
-        var marker = new google.maps.Marker({
-          position: {lat: {{artinstallation.lat}}, lng: {{artinstallation.lon}}},
-          icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            scale: 3,
-            strokeColor: "#4884AB"
-          },
-          map: map
-        })
-        {% endfor %}
-	  }
-      function initialize() {
-        if (navigator.geolocation) {
-        	navigator.geolocation.getCurrentPosition(plotPosition);
-   		} else {
-   			window.alert("Geolocation is not supported by this browser.");
-		}
-      }
-      google.maps.event.addDomListener(window, 'load', initialize);
-    </script>
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(function (position) {
+                        var pos = new google.maps.LatLng(position.coords.latitude,
+                                position.coords.longitude);
+                        var infowindow = new google.maps.InfoWindow({
+                            map: map,
+                            position: pos,
+                            content: 'Current location.'
+                        });
+
+                        map.setCenter(pos);
+                        plotWidgets();
+                    }, function () {
+                        handleNoGeolocation(true);
+                    });
+                } else {
+                    // Browser doesn't support Geolocation
+                    handleNoGeolocation(false);
+                }
+
+                function handleNoGeolocation(errorFlag) {
+                    if (errorFlag) {
+                        var content = 'Error: The Geolocation service failed.';
+                    } else {
+                        var content = 'Error: Your browser doesn\'t support geolocation.';
+                    }
+
+                    var options = {
+                        map: map,
+                        position: new google.maps.LatLng(49.2508548, -123.1174762),
+                        content: content
+                    };
+
+                    var infowindow = new google.maps.InfoWindow(options);
+                    map.setCenter(options.position);
+                    plotWidgets();
+                }
+            }
+
+            function distance(lat1, lon1, lat2, lon2) {
+                var radlat1 = Math.PI * lat1/180
+                var radlat2 = Math.PI * lat2/180
+                var radlon1 = Math.PI * lon1/180
+                var radlon2 = Math.PI * lon2/180
+                var theta = lon1-lon2
+                var radtheta = Math.PI * theta/180
+                var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+                dist = Math.acos(dist)
+                dist = dist * 180/Math.PI
+                dist = dist * 60 * 1.1515
+                dist = dist * 1.609344
+                return dist * 1000
+            }
+
+            function updateListView(dis){
+                var radius = dis * 1000;
+                
+                //var radius = distanceWidget.get('distance') * 1000;
+                
+                //alert(radius);
+                
+                {% for artinstallation in artinstallations %}
+                var distan = distance(map.getCenter().lat(), map.getCenter().lng(), {{artinstallation.lat}}, {{artinstallation.lon}})
+				
+				//alert(distance(map.getCenter().lat(), map.getCenter().lng(), {{artinstallation.lat}}, {{artinstallation.lon}}));
+				
+                var distan_round = Math.round(distan);
+                var distan_string = distan_round.toString()
+                $(".distance-{{artinstallation.locationid}}").html(distan_string);
+
+                if (distan > radius) {
+                    $('.{{artinstallation.locationid}}').hide();
+                }
+                else {
+    	        	$('.{{artinstallation.locationid}}').show();
+        		}
+                {% endfor %}
+            }
+            
+            function showAll() {
+            	{% for artinstallation in artinstallations %}
+    	        	$('.{{artinstallation.locationid}}').show();
+                {% endfor %}
+            }
+            
+
+            function plotWidgets() {
+                distanceWidget = new DistanceWidget(map);
+                google.maps.event.addListener(distanceWidget, 'distance_changed', function () {
+                    displayInfo(distanceWidget);
+                });
+
+                google.maps.event.addListener(distanceWidget, 'position_changed', function () {
+                    displayInfo(distanceWidget);
+                });
+
+                {% for artinstallation in artinstallations %}
+                    var marker = new google.maps.Marker({
+                        position: {lat: {{ artinstallation.lat }}, lng: {{ artinstallation.lon }}},
+                        icon: {
+                            path: google.maps.SymbolPath.CIRCLE,
+                            scale:3,
+                            strokeColor:"#4884AB"},
+                        map: map
+                    })
+                {% endfor %}
+
+                updateListView();
+            }
+            /**
+            * A distance widget that will display a circle that can be resized and will
+            * provide the radius in km.
+            *
+            * @param {google.maps.Map} map The map on which to attach the distance widget.
+            *
+            * @constructor
+            */
+            function DistanceWidget(map) {
+                this.set('map', map);
+                this.set('position', map.getCenter());
+
+                var marker = new google.maps.Marker({
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        scale: 5
+                    },
+                    draggable: false,
+                    title: 'Move me to change your current position'
+                });
+
+                // Bind the marker map property to the DistanceWidget map property
+                marker.bindTo('map', this);
+                // Bind the marker position property to the DistanceWidget position property
+                marker.bindTo('position', this);
+                // Create a new radius widget
+                var radiusWidget = new RadiusWidget();
+                // Bind the radiusWidget map to the DistanceWidget map
+                radiusWidget.bindTo('map', this);
+                // Bind the radiusWidget center to the DistanceWidget position
+                radiusWidget.bindTo('center', this, 'position');
+                // Bind to the radiusWidgets' distance property
+                this.bindTo('distance', radiusWidget);
+                // Bind to the radiusWidgets' bounds property
+                this.bindTo('bounds', radiusWidget);
+                
+            }
+
+            /**
+             * A radius widget that add a circle to a map and centers on a marker.
+             *
+             * @constructor
+             */
+            function RadiusWidget() {
+                var circle = new google.maps.Circle({
+                    strokeColor: '#7E5CD6',
+                    strokeOpacity: 0.4,
+                    fillColor: '#7E5CD6',
+                    fillOpacity: 0.3,
+                    strokeWeight: 2
+                });
+
+                // Set the distance property value, default to 2km.
+                this.set('distance', 2);
+                // Bind the RadiusWidget bounds property to the circle bounds property.
+                this.bindTo('bounds', circle);
+                // Bind the circle center to the RadiusWidget center property
+                circle.bindTo('center', this);
+                // Bind the circle map to the RadiusWidget map
+                circle.bindTo('map', this);
+                // Bind the circle radius property to the RadiusWidget radius property
+                circle.bindTo('radius', this);
+            }
+
+            RadiusWidget.prototype = new google.maps.MVCObject();
+            
+            /**
+ 			* Update the radius when the distance has changed.
+ 			*/
+			RadiusWidget.prototype.distance_changed = function() {
+  				this.set('radius', this.get('distance') * 1000);
+			};
+			
+
+            /**
+ 			* Set the distance of the circle based on the dropdown.
+ 			*/
+            function changeRadius(sel) {
+      			//alert("in change radius");
+      				updateListView(sel.value);
+      				distanceWidget.set('distance', sel.value);
+      		}
+            
+            /*
+            RadiusWidget.prototype.distance_changed = function() {
+                this.set('radius', this.get('distance') * 1000);
+            }; // plug in distance from the dropdown box
+            */
+
+            DistanceWidget.prototype = new google.maps.MVCObject();
+            google.maps.event.addDomListener(window, 'load', init);
+        </script>
     </head>
     <body>
-
-    <script type="text/javascript">
-    function changeRadius() {
-      	var radius = document.getElementById("radius-menu-option").value;
-      }
-    </script>
 
         <div class="container">
             <h1>Artly</h1>
             <h4>explore Vancouver through public art</h4><br />
 			<div id="radius-dropdown">
             Radius:
-            <select name="radiusMenuOption" id="radiusMenuOption" onchange="initialize()">
-        		<option value="1000.0">1 km</option>
-        		<option value="2000.0" selected>2 km</option>
-        		<option value="3000.0">3 km</option>
-        		<option value="4000.0">4 km</option>
-        		<option value="5000.0">5 km</option>
+            <select name="radiusMenuOption" id="radiusMenuOption" onclick="changeRadius(this)">
+        		<option value="none">Everything</option>
+        		<option value="1">1 km</option>
+        		<option value="2" selected>2 km</option>
+        		<option value="3">3 km</option>
+        		<option value="4">4 km</option>
+        		<option value="5">5 km</option>
         	</select>
         	</div>
             
@@ -166,8 +300,4 @@
             </div>
 
     </body>
-
 </html>
-
-<!-- See http://bootstrap-table.wenzhixin.net.cn/examples/
-Search for checkbox select -->
