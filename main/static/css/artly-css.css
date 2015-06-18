@@ -7,29 +7,36 @@
     vertical-align: middle;
 }
 
-#datatable {
-	width: 400px;
-	float: left;
-	padding-left: 0px;
-	height: 500px;
-	overflow: scroll;
-	margin: 0;
-	padding-bottom: 0;
-	padding-top: 0;
+.container {
+	padding-top: 15px;
+	width: 90%;
 }
 
 #content {
+	padding-top: 0px;
+}
+
+#datatable {
+	width: 450px;
+	padding-left: 30px;
+	height: 500px;
+	overflow: scroll;
+	position: relative;
+	top: -80px;
+}
+
+#content {
+	width: 100%;
 	padding-top: 1%;
 }
 
 #map-canvas {
     float: left;
     height: 500px;
-    width: 700px;
+	width: calc(100% - 600px); //readjusts based on screen size
 }
 
 #radius-dropdown {
-	padding-left: 950px;
 }
 
 #radiusMenuOption {
@@ -37,8 +44,17 @@
 }
 
 #selection {
-    float: middle;
-    padding-top: 100;
-    height: 50px;
+    height: 0x;
     width: 700px;
+    float: middle;
+}
+
+#header {
+	padding-left: 40px;
+}
+
+#butt {
+	position: relative;
+	right: -300px;
+	top: -80px;
 }
