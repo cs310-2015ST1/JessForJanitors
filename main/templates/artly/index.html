@@ -14,6 +14,7 @@
         <script src="{% static 'js/artly-ajax.js' %}"></script>
         <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
 
+
         <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
         <title>Artly with MVC Radius</title>
 
@@ -113,6 +114,7 @@
     	        	$('.{{artinstallation.locationid}}').show();
         		}
                 {% endfor %}
+                
             }
 
             function showAll() {
@@ -271,7 +273,7 @@
                 <tbody>
                 {% for artinstallation in artinstallations %}
                     <tr id="check-row" class="{{artinstallation.locationid}}">
-                        <td><center><input type="checkbox" id="select" data-installation-name="{{ artinstallation.name }}" /></center></td>
+                        <td><input type="checkbox" id="select" data-installation-name="{{ artinstallation.name }}" /></td>
                         <td>{{ artinstallation.name }}</td>
                         <td class="distance-{{artinstallation.locationid}}"></td>
                         <td><a href="{{ artinstallation.url }}" target="_blank" id="no-check"> → </a></td>
@@ -285,15 +287,19 @@
                 <strong>There are no installations to present.</strong>
             {% endif %}
 
+            <!--
+            <script>
+                $("#example").DataTable( {"paging": false, "scrollY": 400, "order": [[ 2, "asc" ]]} );
+            </script>
+            -->
+
 
         </div>
 
-        <div class="container">
             <!-- for testing purposes-->
             <div id="selection">
                 <span id="installation_name"></span><i> was clicked</i>
             </div>
-        </div>
 
         <script type="text/javascript">
             setTimeOut(updateListView(10), 2000);
