@@ -12,6 +12,7 @@
         <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
         <!-- <script src="{% static 'js/artly-jquery.js' %}"></script> -->
         <script src="{% static 'js/artly-ajax.js' %}"></script>
+        <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
 
         <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
         <title>Artly with MVC Radius</title>
@@ -28,12 +29,13 @@
         <script type="text/javascript">
             var map;
             var distanceWidget;
-
+            var currentLocation;
             function init() {
                 map = new google.maps.Map(document.getElementById('map-canvas'), {zoom: 12});
-
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
+                        currentLocation = new google.maps.LatLng(position.coords.latitude,
+                                position.coords.longitude);
                         var pos = new google.maps.LatLng(position.coords.latitude,
                                 position.coords.longitude);
                         var infowindow = new google.maps.InfoWindow({
@@ -41,7 +43,6 @@
                             position: pos,
                             content: 'Current location.'
                         });
-
                         map.setCenter(pos);
                         plotWidgets();
                     }, function () {
@@ -51,7 +52,6 @@
                     // Browser doesn't support Geolocation
                     handleNoGeolocation(false);
                 }
-
                 function handleNoGeolocation(errorFlag) {
                     if (errorFlag) {
                         var content = 'Error: The Geolocation service failed.';
@@ -59,16 +59,21 @@
                         var content = 'Error: Your browser doesn\'t support geolocation.';
                     }
 
+                    currentLocation = new google.maps.LatLng(49.2508548, -123.1174762);
                     var options = {
                         map: map,
                         position: new google.maps.LatLng(49.2508548, -123.1174762),
                         content: content
                     };
-
                     var infowindow = new google.maps.InfoWindow(options);
                     map.setCenter(options.position);
                     plotWidgets();
                 }
+            }
+
+            function createTable() {
+                $("#example").DataTable( {"paging": false, "scrollY": 400, "order": [[ 2, "asc" ]]} );
+                $('#disappear-on-click').hide();
             }
 
             function distance(lat1, lon1, lat2, lon2) {
@@ -94,14 +99,13 @@
                 //alert(radius);
                 
                 {% for artinstallation in artinstallations %}
-                var distan = distance(map.getCenter().lat(), map.getCenter().lng(), {{artinstallation.lat}}, {{artinstallation.lon}})
-				
+                var distan = distance(currentLocation.lat(), currentLocation.lng(), {{artinstallation.lat}}, {{artinstallation.lon}})
+
 				//alert(distance(map.getCenter().lat(), map.getCenter().lng(), {{artinstallation.lat}}, {{artinstallation.lon}}));
-				
+
                 var distan_round = Math.round(distan);
                 var distan_string = distan_round.toString()
                 $(".distance-{{artinstallation.locationid}}").html(distan_string);
-
                 if (distan > radius) {
                     $('.{{artinstallation.locationid}}').hide();
                 }
@@ -110,24 +114,24 @@
         		}
                 {% endfor %}
             }
-            
+
             function showAll() {
             	{% for artinstallation in artinstallations %}
     	        	$('.{{artinstallation.locationid}}').show();
                 {% endfor %}
             }
             
-
             function plotWidgets() {
                 distanceWidget = new DistanceWidget(map);
+
+                updateCurrentLocation(distanceWidget);
+
                 google.maps.event.addListener(distanceWidget, 'distance_changed', function () {
-                    displayInfo(distanceWidget);
+                    updateCurrentLocation(distanceWidget);
                 });
-
                 google.maps.event.addListener(distanceWidget, 'position_changed', function () {
-                    displayInfo(distanceWidget);
+                    updateCurrentLocation(distanceWidget);
                 });
-
                 {% for artinstallation in artinstallations %}
                     var marker = new google.maps.Marker({
                         position: {lat: {{ artinstallation.lat }}, lng: {{ artinstallation.lon }}},
@@ -138,8 +142,7 @@
                         map: map
                     })
                 {% endfor %}
-
-                updateListView();
+                updateListView(50);
             }
             /**
             * A distance widget that will display a circle that can be resized and will
@@ -152,7 +155,6 @@
             function DistanceWidget(map) {
                 this.set('map', map);
                 this.set('position', map.getCenter());
-
                 var marker = new google.maps.Marker({
                     icon: {
                         path: google.maps.SymbolPath.CIRCLE,
@@ -161,7 +163,6 @@
                     draggable: false,
                     title: 'Move me to change your current position'
                 });
-
                 // Bind the marker map property to the DistanceWidget map property
                 marker.bindTo('map', this);
                 // Bind the marker position property to the DistanceWidget position property
@@ -178,7 +179,6 @@
                 this.bindTo('bounds', radiusWidget);
                 
             }
-
             /**
              * A radius widget that add a circle to a map and centers on a marker.
              *
@@ -192,7 +192,6 @@
                     fillOpacity: 0.3,
                     strokeWeight: 2
                 });
-
                 // Set the distance property value, default to 2km.
                 this.set('distance', 2);
                 // Bind the RadiusWidget bounds property to the circle bounds property.
@@ -204,7 +203,6 @@
                 // Bind the circle radius property to the RadiusWidget radius property
                 circle.bindTo('radius', this);
             }
-
             RadiusWidget.prototype = new google.maps.MVCObject();
             
             /**
@@ -214,14 +212,17 @@
   				this.set('radius', this.get('distance') * 1000);
 			};
 			
-
             /**
  			* Set the distance of the circle based on the dropdown.
  			*/
             function changeRadius(sel) {
       			//alert("in change radius");
-      				updateListView(sel.value);
-      				distanceWidget.set('distance', sel.value);
+      			updateListView(sel.value);
+      			distanceWidget.set('distance', sel.value);
+      		}
+
+      		function updateCurrentLocation(widget){
+      		    currentLocation = widget.get('position');
       		}
             
             /*
@@ -229,7 +230,6 @@
                 this.set('radius', this.get('distance') * 1000);
             }; // plug in distance from the dropdown box
             */
-
             DistanceWidget.prototype = new google.maps.MVCObject();
             google.maps.event.addDomListener(window, 'load', init);
         </script>
@@ -256,7 +256,7 @@
             <div id="content">
             <div id="map-canvas"></div>
             <div id="butt">
-            <button onclick='$("#example").dataTable( {"paging": false, "scrollY": 400, "order": [[ 2, "asc" ]], "bInfo": false, "bAutoWidth": false});'>Sort By Distance</button>            
+            <button id="disappear-on-click" onclick='createTable()'>Sort By Distance</button>
             </div><br />
             <div id="datatable">
             <table id="example" class="table table-hover" data-click-to-select="true">
@@ -285,11 +285,6 @@
                 <strong>There are no installations to present.</strong>
             {% endif %}
 
-            <!--
-            <script>
-                $("#example").DataTable( {"paging": false, "scrollY": 400, "order": [[ 2, "asc" ]]} );
-            </script>
-            -->
 
         </div>
 
@@ -299,6 +294,11 @@
                 <span id="installation_name"></span><i> was clicked</i>
             </div>
         </div>
+
+        <script type="text/javascript">
+            setTimeOut(updateListView(10), 2000);
+            setTimeOut(createTable(), 2000);
+        </script>
 
     </body>
 </html>
