@@ -73,7 +73,7 @@
             }
 
             function createTable() {
-                $("#example").DataTable( {"paging": false, "scrollY": 400, "order": [[ 2, "asc" ]]} );
+                $("#example").DataTable( {"paging": false, "scrollY": 400, "order": [[ 2, "asc" ]], "bInfo": false} );
                 $('#disappear-on-click').hide();
             }
 
@@ -244,9 +244,9 @@
 			<div id="radius-dropdown">
             Radius:
             <select name="radiusMenuOption" id="radiusMenuOption" onclick="changeRadius(this)">
-        		<option value="none">Everything</option>
+        		<option value="none" selected>Everything</option>
         		<option value="1">1 km</option>
-        		<option value="2" selected>2 km</option>
+        		<option value="2">2 km</option>
         		<option value="3">3 km</option>
         		<option value="4">4 km</option>
         		<option value="5">5 km</option>
@@ -264,16 +264,16 @@
             <table id="example" class="table table-hover" data-click-to-select="true">
                 <thead>
                 <tr id="check-row">
-                        <th class="span1"></th>
-                        <th class="span1">Name</th>
-                        <th class="span1">Distance (m)</th>
-                        <th class="span1">Info</th>
+                        <th width="10%"></th>
+                        <th width="50%">Name</th>
+                        <th width="25%">Distance (m)</th>
+                        <th width="15%">Info</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for artinstallation in artinstallations %}
                     <tr id="check-row" class="{{artinstallation.locationid}}">
-                        <td><input type="checkbox" id="select" data-installation-name="{{ artinstallation.name }}" /></td>
+                        <td><center><input type="checkbox" id="select" data-installation-name="{{ artinstallation.name }}" /></center></td>
                         <td>{{ artinstallation.name }}</td>
                         <td class="distance-{{artinstallation.locationid}}"></td>
                         <td><a href="{{ artinstallation.url }}" target="_blank" id="no-check"> → </a></td>
