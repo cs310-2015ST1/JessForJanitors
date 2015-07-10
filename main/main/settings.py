@@ -56,6 +56,7 @@ INSTALLED_APPS = (
     'registration',
     'bootstrap_toolkit',
     'googleapiclient',
+    'social.apps.django_app.default',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -101,3 +102,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+GOOGLE_OAUTH2_CLIENT_ID = '104251976447-6j4tomr6jsoio5tgr8bub09j2nnkj5go'
+GOOGLE_OAUTH2_CLIENT_SECRET  = 'Jm_B7rGoJlinXz0GxqDYR8_J'
+
+AUTHENTICATION_BACKENDS = (
+    'social.backends.google.GoogleOAuth2',)
