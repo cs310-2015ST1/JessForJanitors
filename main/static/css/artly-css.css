@@ -18,8 +18,9 @@
 #datatable {
 	width: 550px;
 	padding-left: 30px;
-	height: 540px;
-	overflow: scroll;
+	height: 700px;
+	float: right;
+	/*overflow: scroll;*/
 	position: relative;
 	top: -80px;
 }

@@ -31,6 +31,15 @@
             var map;
             var distanceWidget;
             var currentLocation;
+
+            function createTable() {
+                $("#example").DataTable( {
+                "paging": false,
+                "scrollY": "480px",
+                "order": [[ 2, "asc" ]],
+                "bInfo": false } );
+            }
+
             function init() {
                 map = new google.maps.Map(document.getElementById('map-canvas'), {zoom: 12});
                 if (navigator.geolocation) {
@@ -72,11 +81,6 @@
                 }
             }
 
-            function createTable() {
-                $("#example").DataTable( {"paging": false, "scrollY": 400, "order": [[ 2, "asc" ]], "bInfo": false} );
-                $('#disappear-on-click').hide();
-            }
-
             function distance(lat1, lon1, lat2, lon2) {
                 var radlat1 = Math.PI * lat1/180
                 var radlat2 = Math.PI * lat2/180
@@ -114,6 +118,8 @@
     	        	$('.{{artinstallation.locationid}}').show();
         		}
                 {% endfor %}
+
+                createTable();
                 
             }
 
@@ -234,6 +240,16 @@
             */
             DistanceWidget.prototype = new google.maps.MVCObject();
             google.maps.event.addDomListener(window, 'load', init);
+
+            /* Create an array with the values of all the checkboxes in a column */
+            $.fn.dataTable.ext.order['dom-checkbox'] = function  ( settings, col ){
+                return this.api().column( col, {order:'index'} ).nodes().map( function ( td, i ) {
+                return $('input', td).prop('checked') ? '1' : '0';
+            } );
+
+}
+
+
         </script>
     </head>
     <body>
@@ -257,9 +273,6 @@
 
             <div id="content">
             <div id="map-canvas"></div>
-            <div id="butt">
-            <button id="disappear-on-click" onclick='createTable()'>Sort By Distance</button>
-            </div><br />
             <div id="datatable">
             <table id="example" class="table table-hover" data-click-to-select="true">
                 <thead>
@@ -283,28 +296,16 @@
             </table>
             </div>
             </div>
+
             {% else %}
                 <strong>There are no installations to present.</strong>
             {% endif %}
-
-            <!--
-            <script>
-                $("#example").DataTable( {"paging": false, "scrollY": 400, "order": [[ 2, "asc" ]]} );
-            </script>
-            -->
-
-
         </div>
 
             <!-- for testing purposes-->
             <div id="selection">
                 <span id="installation_name"></span><i> was clicked</i>
             </div>
-
-        <script type="text/javascript">
-            setTimeOut(updateListView(10), 2000);
-            setTimeOut(createTable(), 2000);
-        </script>
 
     </body>
 </html>
