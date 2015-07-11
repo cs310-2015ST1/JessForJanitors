@@ -33,11 +33,18 @@
             var currentLocation;
 
             function createTable() {
+
+                /* Make table visible */
+                var list = document.getElementById("example");
+                list.style.visibility = "visible";
+
+                /* Initialize data table */
                 $("#example").DataTable( {
                 "paging": false,
                 "scrollY": "480px",
                 "order": [[ 2, "asc" ]],
                 "bInfo": false } );
+
             }
 
             function init() {
