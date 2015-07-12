@@ -14,7 +14,4 @@ class ArtInstallation(models.Model):
 
 class UserInformation(models.Model):
     userid = models.CharField(max_length=128, unique=True)
-    username = models.CharField(max_length=128)
-    password = models.CharField(max_length=128)
-    savedinstallations = models.CommaSeparatedIntegerField(max_length=512)
-    
+    savedinstallations = models.ManyToManyField(ArtInstallation)

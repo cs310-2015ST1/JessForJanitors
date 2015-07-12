@@ -39,7 +39,7 @@ def click_installation(request):
 
     return HttpResponse(installation.name)
 
-def favourite(request):
+def click_favourite(request):
     installation_name = None
     if request.method == 'GET':
         installation_name = request.GET['name']
@@ -50,7 +50,10 @@ def favourite(request):
         
         if installation:
             if installation.favourited:
+                UserInformation.savedinstallations.remove(installation)
                 installation.favourited = False
+                
             else:
+                UserInformation.savedinstallations.add(installation)
                 installation.favourited = True
     return HttpResponse(installation.name)
