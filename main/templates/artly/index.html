@@ -40,10 +40,11 @@
                 /* Initialize data table */
                 table = $("#example").dataTable( {
                 "paging": false,
-                "scrollY": "500px",
+                "scrollY": "475px",
                 "order": [[ 2, "asc" ]],
                 "bInfo": false,
-                "bFilter": false } );
+                "dom": '<"search"f>rt<"clear">'
+                } );
                 }
 
             }
@@ -283,11 +284,6 @@
         		<option value="5">5 km</option>
         	</select>
         	</div>
-
-            <div id="content">
-                Search:
-                <input type="text" id="search">
-            </div>
 
             
             {% if artinstallations %}

@@ -6,6 +6,12 @@
     vertical-align: middle;
 }
 
+.search {
+	float: right;
+	position: relative;
+	top: -15px;
+}
+
 .container {
 	padding-top: 15px;
 	width: 90%;
@@ -22,7 +28,7 @@
 	float: right;
 	/*overflow: scroll;*/
 	position: relative;
-	top: -36px;
+	top: -56px;
 }
 
 #content {
