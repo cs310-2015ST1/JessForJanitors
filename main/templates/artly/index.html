@@ -289,11 +289,6 @@
                 <input type="text" id="search">
             </div>
 
-            <div class="twitter-share-button">
-            <a href="https://twitter.com/intent/tweet?text=I'm+using+Artly+to+discover+Vancouver's+public+art!"
-            	target="_blank"
-            	onClick="TweetWindow=window.open('https://twitter.com/intent/tweet?text=I'm+using+Artly+to+discover+Vancouver's+public+art!','TweetWindow','width=600,height=250'); return false;">Tweet</a>
-            </div>
             
             {% if artinstallations %}
 
@@ -307,6 +302,7 @@
                         <th width="50%">Name</th>
                         <th width="25%">Distance (m)</th>
                         <th width="15%">Info</th>
+                        <th width="15%"><img src="{% static "images/Twitter_logo_blue.png" %}" width="20" alt="Tweet"/></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -316,6 +312,7 @@
                         <td>{{ artinstallation.name }}</td>
                         <td class="distance-{{artinstallation.locationid}}"></td>
                         <td><a href="{{ artinstallation.url }}" target="_blank" id="no-check"> → </a></td>
+                        <td><a href="{{ artinstallation.twitterurl }}" target="_blank" id="no-check"> → </a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
