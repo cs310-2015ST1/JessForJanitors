@@ -21,12 +21,12 @@
 
 #datatable {
 	width: 550px;
-	padding-left: 30px;
-	height: 700px;
+	padding-left: 0px;
+	height: 736px;
 	float: right;
 	/*overflow: scroll;*/
 	position: relative;
-	top: -80px;
+	top: -36px;
 }
 
 #content {
@@ -37,7 +37,7 @@
 #map-canvas {
     float: left;
     height: 500px;
-	width: calc(100% - 600px); //readjusts based on screen size
+	width: calc(100% - 575px); //readjusts based on screen size
 }
 
 #radius-dropdown {
