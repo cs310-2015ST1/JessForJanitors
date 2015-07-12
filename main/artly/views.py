@@ -49,11 +49,8 @@ def click_favourite(request):
         installation = ArtInstallation.objects.get(name=str(installation_name))
         
         if installation:
-            if installation.favourited:
-                UserInformation.savedinstallations.remove(installation)
-                installation.favourited = False
-                
-            else:
+            if installation.selected:
                 UserInformation.savedinstallations.add(installation)
-                installation.favourited = True
+            else:
+                UserInformation.savedinstallations.remove(installation)
     return HttpResponse(installation.name)

@@ -303,16 +303,23 @@
             <table id="example" class="table table-hover" data-click-to-select="true">
                 <thead>
                 <tr height="10px" id="check-row">
-                        <th width="10%"></th>
+                        <th width="7.5%"></th>
+                        <th width="7.5%"><img src="http://orig15.deviantart.net/8047/f/2013/245/d/4/little_pixel_heart_by_kawiku-d6ksnjh.gif"></th>
                         <th width="50%">Name</th>
                         <th width="25%">Distance (m)</th>
-                        <th width="15%">Info</th>
+                        <th width="10%">Info</th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for artinstallation in artinstallations %}
                     <tr id="check-row" class="{{artinstallation.locationid}}">
                         <td><center><input type="checkbox" id="select" data-installation-name="{{ artinstallation.name }}" /></center></td>
+<!--                         if UserInformation.objects.filter(savedinstallations__locationid = artinstallation.locationid) -->
+<!--                         	<td><img src="http://orig15.deviantart.net/8047/f/2013/245/d/4/little_pixel_heart_by_kawiku-d6ksnjh.gif"></td> -->
+<!--                         else -->
+<!--                         	<td></td> -->
+<!--                         endif -->
+						<td><img src="http://orig15.deviantart.net/8047/f/2013/245/d/4/little_pixel_heart_by_kawiku-d6ksnjh.gif"></td>
                         <td>{{ artinstallation.name }}</td>
                         <td class="distance-{{artinstallation.locationid}}"></td>
                         <td><a href="{{ artinstallation.url }}" target="_blank" id="no-check"> → </a></td>
