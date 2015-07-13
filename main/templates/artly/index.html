@@ -272,6 +272,17 @@
                     .order( [ 0, 'desc' ], [ 3, 'asc' ] )
                     .draw();
             }
+            
+            function saveSelected() {
+				var selectedCount = 0;
+            	{% for artinstallation in artinstallations %}
+            		{% if artinstallation.selected %}
+            			UserInformation.savedinstallations.add(artinstallation);
+            			selectedCount++
+            		{% endif %}
+            	{% endfor %}
+            	alert('Success! ' + selectedCount + ' locations saved.');
+            }
 
         </script>
     </head>
@@ -303,9 +314,8 @@
             	onClick="TweetWindow=window.open('https://twitter.com/intent/tweet?text=I'm+using+Artly+to+discover+Vancouver's+public+art!','TweetWindow','width=600,height=250'); return false;">Tweet</a>
             </div>
             
-            
             <div id="content">
-            <button type="button" onclick="alert('This is a placeholder! Still trying to figure out the implementation.')">Save Selected Locations</button>
+            <button type="button" onclick="saveSelected()">Save Selected Locations</button>
             </div>
             
             {% if artinstallations %}

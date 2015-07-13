@@ -8,7 +8,9 @@ def index(request):
     # Order the categories by name
     # Place the list in our context_dict dictionary which will be passed to the template engine.
     art_list = ArtInstallation.objects.order_by('name')
-    context_dict = {'artinstallations': art_list}
+    saved_list = UserInformation.objects.order_by('name')
+    context_dict = {'artinstallations': art_list, 'savedinstallations': saved_list}
+#     context_dict2 = {'savedinstallations': saved_list}
 
     # Render the response and send it back!
     return render(request, 'artly/index.html', context_dict)
@@ -39,7 +41,7 @@ def click_installation(request):
 
     return HttpResponse(installation.name)
 
-def click_favourite(request):
+def click_save(request):
     installation_name = None
     if request.method == 'GET':
         installation_name = request.GET['name']
