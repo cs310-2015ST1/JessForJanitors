@@ -21,5 +21,7 @@ $(document).ready(function() {
         } else {
             $(this).closest('tr').removeClass("success");
         }
+
+        sortCheck();
     });
 });
