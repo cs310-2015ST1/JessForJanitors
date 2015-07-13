@@ -15,12 +15,6 @@
         <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
         <title>Artly with MVC Radius</title>
 
-        <style type="text/css">
-            #map-canvas {
-                height: 500px;
-            }
-        </style>
-
         <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnfkZ8FnyCfBkLpC6qCPEZpe_wLpT1lmE&sensor=false">
         </script>
@@ -29,6 +23,10 @@
             var distanceWidget;
             var currentLocation;
             var table;
+
+            //var tableHeight = $(document).height();
+
+            //alert(tableHeight + "px");
 
             function createTable() {
 
@@ -54,6 +52,12 @@
                     } );
                 }
             }
+
+            $(window).bind('resize', function () {
+                map.setCenter(currentLocation);
+                $(".dataTables_scrollBody").height($('#map-canvas').height());
+                table.fnDraw();
+            });
 
             function init() {
                 map = new google.maps.Map(document.getElementById('map-canvas'), {zoom: 12});
