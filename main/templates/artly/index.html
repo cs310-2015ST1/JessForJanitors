@@ -24,6 +24,8 @@
             var currentLocation;
             var table;
 
+            var tableHeight = $('#map-canvas').height();
+
             //var tableHeight = $(document).height();
 
             //alert(tableHeight + "px");
@@ -38,17 +40,20 @@
                     /* Initialize data table */
                     table = $("#example").dataTable( {
                     "paging": false,
-                    "scrollY": "500px",
+                    "scrollY": tableHeight + "px",
                     "order": [[ 3, "asc" ]],
                     "bInfo": false,
                     "dom": '<"search"f>rt<"clear">',
                     "columns": [
                                 { "orderDataType" : "dom-checkbox"},
-                                null,
-                                null,
-                                null,
-                                null,
-                                null]
+                                { "orderable": false },
+                                { "orderable": false },
+                                { "orderable": false },
+                                { "orderable": false },
+                                { "orderable": false }],
+                    "columnDefs": [
+                        { "orderable": false, "targets": 0 }
+                    ]
                     } );
                 }
             }
