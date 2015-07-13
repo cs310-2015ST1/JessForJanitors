@@ -41,11 +41,12 @@
                     table = $("#example").dataTable( {
                         "paging": false,
                         "scrollY": "500px",
-                        "order": [[0, 'desc' ], [ 2, 'asc' ]],
+                        "order": [[0, 'desc' ], [ 3, 'asc' ]],
                         "bInfo": false,
                         "bFilter": false,
                         "columns": [
                             { "orderDataType" : "dom-checkbox"},
+                            null,
                             null,
                             null,
                             null
@@ -268,7 +269,7 @@
                 var table = $('#example').DataTable();
 
                 table
-                    .order( [ 0, 'desc' ], [ 2, 'asc' ] )
+                    .order( [ 0, 'desc' ], [ 3, 'asc' ] )
                     .draw();
             }
 
