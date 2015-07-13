@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from artly.models import ArtInstallation
+from artly.models import UserInformation
 
 def index(request):
     # Query the database for a list of ALL categories currently stored.
@@ -38,3 +39,18 @@ def click_installation(request):
 
     return HttpResponse(installation.name)
 
+def click_favourite(request):
+    installation_name = None
+    if request.method == 'GET':
+        installation_name = request.GET['name']
+    
+    if installation_name:
+        
+        installation = ArtInstallation.objects.get(name=str(installation_name))
+        
+        if installation:
+            if installation.selected:
+                UserInformation.savedinstallations.add(installation)
+            else:
+                UserInformation.savedinstallations.remove(installation)
+    return HttpResponse(installation.name)
