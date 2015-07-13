@@ -37,23 +37,22 @@
                     var list = document.getElementById("example");
                     list.style.visibility = "visible";
 
-                /* Initialize data table */
-                table = $("#example").dataTable( {
-                "paging": false,
-                "scrollY": "500px",
-                "order": [[ 2, "asc" ]],
-                "bInfo": false,
-                "dom": '<"search"f>rt<"clear">'
-                 "columns": [
-                            { "orderDataType" : "dom-checkbox"},
-                            null,
-                            null,
-                            null,
-                            null
-                        ],
-                } );
+                    /* Initialize data table */
+                    table = $("#example").dataTable( {
+                    "paging": false,
+                    "scrollY": "500px",
+                    "order": [[ 3, "asc" ]],
+                    "bInfo": false,
+                    "dom": '<"search"f>rt<"clear">',
+                    "columns": [
+                                { "orderDataType" : "dom-checkbox"},
+                                null,
+                                null,
+                                null,
+                                null,
+                                null]
+                    } );
                 }
-
             }
 
             function init() {
@@ -306,7 +305,7 @@
                         <th width="50%">Name</th>
                         <th width="25%"><center>Distance (m)</center></th>
                         <th width="15%"><center>Info</center></th>
-                        <th width="8%"><img src="{% static "images/Twitter_logo_blue.png" %}" width="20" alt="Tweet"/></th>
+                        <th width="8%"><img src="{% static 'images/Twitter_logo_blue.png' %}" width="20" alt="Tweet"/></th>
                     </tr>
                 </thead>
                 <tbody>
