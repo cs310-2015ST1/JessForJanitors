@@ -12,6 +12,11 @@ $(document).ready(function() {
                /*Return name back just for testing purposes*/
                $('#installation_name').html(data);
             });
+//            
+//            $.get('/artly/click_favourite/', {name: installation_name}, function(data){
+//                /*Return name back just for testing purposes*/
+//                $('#installation_name').html(data);
+//             });
          }
     });
 
@@ -21,5 +26,7 @@ $(document).ready(function() {
         } else {
             $(this).closest('tr').removeClass("success");
         }
+
+        sortCheck();
     });
 });

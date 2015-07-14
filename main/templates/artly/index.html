@@ -5,24 +5,19 @@
 
 <html>
     <head>
-        <link href="{% static 'css/bootstrap-fluid-adj.css'%} " rel="stylesheet">
-        <link href="{% static 'css/bootstrap.min.css'%} " rel="stylesheet" media="screen">
-        <link href="{% static 'css/bootstrap-responsive.css' %}" rel="stylesheet">
+        <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" media="screen">
         <link href="{% static 'css/artly-css.css' %}" rel="stylesheet">
         <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
         <!-- <script src="{% static 'js/artly-jquery.js' %}"></script> -->
         <script src="{% static 'js/artly-ajax.js' %}"></script>
         <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
 
+        <link href='http://fonts.googleapis.com/css?family=Rock+Salt' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Roboto:300,400,700,900' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Lemon' rel='stylesheet' type='text/css'>
 
         <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
         <title>Artly with MVC Radius</title>
-
-        <style type="text/css">
-            #map-canvas {
-                height: 500px;
-            }
-        </style>
 
         <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnfkZ8FnyCfBkLpC6qCPEZpe_wLpT1lmE&sensor=false">
@@ -31,8 +26,58 @@
             var map;
             var distanceWidget;
             var currentLocation;
+            var table;
+
+            var allowedBounds = new google.maps.LatLngBounds(
+                new google.maps.LatLng(49.186972, -123.291455),
+                new google.maps.LatLng(49.322768, -123.006497)
+            );
+
+            var tableHeight = window.innerHeight - 300;
+
+            //alert(tableHeight + "px");
+
+            function createTable() {
+
+                if(table == null) {
+                    /* Make table visible */
+                    var list = document.getElementById("example");
+                    list.style.visibility = "visible";
+
+                    /* Initialize data table */
+                    table = $("#example").dataTable( {
+                    "paging": false,
+                    "scrollY": tableHeight + "px",
+                    "order": [[ 3, "asc" ]],
+                    "bInfo": false,
+                    "dom": '<"search"f>rt<"clear">',
+                    "columns": [
+                                { "orderDataType" : "dom-checkbox"},
+                                { "orderable": false },
+                                { "orderable": false },
+                                { "orderable": false },
+                                { "orderable": false },
+                                { "orderable": false }],
+                    "columnDefs": [
+                        { "orderable": false, "targets": 0 }
+                    ],
+                    "language": {
+                        "sSearch": ""
+                    }
+                    } );
+
+                    $('div.dataTables_filter input').attr('placeholder', 'Search...');
+                }
+            }
+
+            $(window).bind('resize', function () {
+                map.setCenter(currentLocation);
+                $(".dataTables_scrollBody").height($('#map-canvas').height());
+                table.fnDraw();
+            });
+
             function init() {
-                map = new google.maps.Map(document.getElementById('map-canvas'), {zoom: 12});
+                map = new google.maps.Map(document.getElementById('map-canvas'), {zoom: 12, minZoom: 10, maxZoom: 16});
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
                         currentLocation = new google.maps.LatLng(position.coords.latitude,
@@ -53,29 +98,49 @@
                     // Browser doesn't support Geolocation
                     handleNoGeolocation(false);
                 }
-                function handleNoGeolocation(errorFlag) {
-                    if (errorFlag) {
-                        var content = 'Error: The Geolocation service failed.';
-                    } else {
-                        var content = 'Error: Your browser doesn\'t support geolocation.';
-                    }
 
-                    currentLocation = new google.maps.LatLng(49.2508548, -123.1174762);
-                    var options = {
-                        map: map,
-                        position: new google.maps.LatLng(49.2508548, -123.1174762),
-                        content: content
-                    };
-                    var infowindow = new google.maps.InfoWindow(options);
-                    map.setCenter(options.position);
-                    plotWidgets();
+                google.maps.event.addListener(map,'drag',function() {
+                    checkBounds();
+                });
+            }
+
+            function checkBounds() {
+                if(! allowedBounds.contains(map.getCenter())) {
+                    var C = map.getCenter();
+                    var X = C.lng();
+                    var Y = C.lat();
+
+                    var AmaxX = allowedBounds.getNorthEast().lng();
+                    var AmaxY = allowedBounds.getNorthEast().lat();
+                    var AminX = allowedBounds.getSouthWest().lng();
+                    var AminY = allowedBounds.getSouthWest().lat();
+
+                    if (X < AminX) {X = AminX;}
+                    if (X > AmaxX) {X = AmaxX;}
+                    if (Y < AminY) {Y = AminY;}
+                    if (Y > AmaxY) {Y = AmaxY;}
+
+                    map.panTo(new google.maps.LatLng(Y,X));
                 }
             }
 
-            function createTable() {
-                $("#example").DataTable( {"paging": false, "scrollY": 400, "order": [[ 2, "asc" ]], "bInfo": false} );
-                $('#disappear-on-click').hide();
+            function handleNoGeolocation(errorFlag) {
+                if (errorFlag) {
+                    var content = 'Error: The Geolocation service failed.';
+                } else {
+                    var content = 'Error: Your browser doesn\'t support geolocation.';
+                }
+                currentLocation = new google.maps.LatLng(49.2508548, -123.1174762);
+                var options = {
+                    map: map,
+                    position: new google.maps.LatLng(49.2508548, -123.1174762),
+                    content: content
+                };
+                var infowindow = new google.maps.InfoWindow(options);
+                map.setCenter(options.position);
+                plotWidgets();
             }
+
 
             function distance(lat1, lon1, lat2, lon2) {
                 var radlat1 = Math.PI * lat1/180
@@ -114,6 +179,8 @@
     	        	$('.{{artinstallation.locationid}}').show();
         		}
                 {% endfor %}
+
+                createTable();
                 
             }
 
@@ -232,14 +299,43 @@
                 this.set('radius', this.get('distance') * 1000);
             }; // plug in distance from the dropdown box
             */
+
             DistanceWidget.prototype = new google.maps.MVCObject();
             google.maps.event.addDomListener(window, 'load', init);
+
+            /* Create an array with the values of all the checkboxes in a column */
+            $.fn.dataTable.ext.order['dom-checkbox'] = function  ( settings, col ){
+                return this.api().column( col, {order:'index'} ).nodes().map( function ( td, i ) {
+                return $('input', td).prop('checked') ? '1' : '0';
+                } );
+            }
+
+            function sortCheck(){
+                var table = $('#example').DataTable();
+
+                table
+                    .order( [ 0, 'desc' ], [ 3, 'asc' ] )
+                    .draw();
+            }
+            
+            function saveSelected() {
+				var selectedCount = 0;
+            	{% for artinstallation in artinstallations %}
+            		{% if artinstallation.selected %}
+            			UserInformation.savedinstallations.add(artinstallation);
+            			selectedCount++
+            		{% endif %}
+            	{% endfor %}
+            	alert('Success! ' + selectedCount + ' locations saved.');
+            }
+
+
         </script>
     </head>
     <body>
 
         <div class="container">
-            <h1>Artly</h1>
+            <h1 id="logo">Artly</h1>
             <h4>explore Vancouver through public art</h4><br />
 			<div id="radius-dropdown">
             Radius:
@@ -252,59 +348,58 @@
         		<option value="5">5 km</option>
         	</select>
         	</div>
+
+            
+            <div id="content">
+            <button type="button" onclick="saveSelected()">Save Selected Locations</button>
+            </div>
             
             {% if artinstallations %}
 
             <div id="content">
             <div id="map-canvas"></div>
-            <div id="butt">
-            <button id="disappear-on-click" onclick='createTable()'>Sort By Distance</button>
-            </div><br />
             <div id="datatable">
             <table id="example" class="table table-hover" data-click-to-select="true">
                 <thead>
-                <tr id="check-row">
+                <tr height="10px" id="check-row">
                         <th width="10%"></th>
+                        <th width="10%"><img src="http://orig15.deviantart.net/8047/f/2013/245/d/4/little_pixel_heart_by_kawiku-d6ksnjh.gif"></th>
                         <th width="50%">Name</th>
-                        <th width="25%">Distance (m)</th>
-                        <th width="15%">Info</th>
+                        <th width="25%"><center>Distance (m)</center></th>
+                        <th width="15%"><center>Info</center></th>
+                        <th width="8%"><img src="{% static 'images/Twitter_logo_blue.png' %}" width="20" alt="Tweet"/></th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for artinstallation in artinstallations %}
                     <tr id="check-row" class="{{artinstallation.locationid}}">
                         <td><center><input type="checkbox" id="select" data-installation-name="{{ artinstallation.name }}" /></center></td>
+<!--                         if UserInformation.objects.filter(savedinstallations__locationid = artinstallation.locationid) -->
+<!--                         	<td><img src="http://orig15.deviantart.net/8047/f/2013/245/d/4/little_pixel_heart_by_kawiku-d6ksnjh.gif"></td> -->
+<!--                         else -->
+<!--                         	<td></td> -->
+<!--                         endif -->
+						<td><img src="http://orig15.deviantart.net/8047/f/2013/245/d/4/little_pixel_heart_by_kawiku-d6ksnjh.gif"></td>
                         <td>{{ artinstallation.name }}</td>
-                        <td class="distance-{{artinstallation.locationid}}"></td>
-                        <td><a href="{{ artinstallation.url }}" target="_blank" id="no-check"> → </a></td>
+                        <td><center class="distance-{{artinstallation.locationid}}"></center></td>
+                        <td><a href="{{ artinstallation.url }}" target="_blank" id="no-check"><center> → </center></a></td>
+                        <td><a href="{{ artinstallation.twitterurl }}" target="_blank" id="no-check"><center> → </center></a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
             </div>
             </div>
+
             {% else %}
                 <strong>There are no installations to present.</strong>
             {% endif %}
-
-            <!--
-            <script>
-                $("#example").DataTable( {"paging": false, "scrollY": 400, "order": [[ 2, "asc" ]]} );
-            </script>
-            -->
-
-
         </div>
 
             <!-- for testing purposes-->
             <div id="selection">
                 <span id="installation_name"></span><i> was clicked</i>
             </div>
-
-        <script type="text/javascript">
-            setTimeOut(updateListView(10), 2000);
-            setTimeOut(createTable(), 2000);
-        </script>
 
     </body>
 </html>
