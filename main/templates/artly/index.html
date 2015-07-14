@@ -15,12 +15,6 @@
         <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
         <title>Artly with MVC Radius</title>
 
-        <style type="text/css">
-            #map-canvas {
-                height: 500px;
-            }
-        </style>
-
         <script type="text/javascript"
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDnfkZ8FnyCfBkLpC6qCPEZpe_wLpT1lmE&sensor=false">
         </script>
@@ -29,6 +23,12 @@
             var distanceWidget;
             var currentLocation;
             var table;
+
+            var tableHeight = $('#map-canvas').height();
+
+            //var tableHeight = $(document).height();
+
+            //alert(tableHeight + "px");
 
             function createTable() {
 
@@ -39,22 +39,30 @@
 
                     /* Initialize data table */
                     table = $("#example").dataTable( {
-                        "paging": false,
-                        "scrollY": "500px",
-                        "order": [[0, 'desc' ], [ 3, 'asc' ]],
-                        "bInfo": false,
-                        "bFilter": false,
-                        "columns": [
-                            { "orderDataType" : "dom-checkbox"},
-                            null,
-                            null,
-                            null,
-                            null
-                        ]
-                    });
+                    "paging": false,
+                    "scrollY": tableHeight + "px",
+                    "order": [[ 3, "asc" ]],
+                    "bInfo": false,
+                    "dom": '<"search"f>rt<"clear">',
+                    "columns": [
+                                { "orderDataType" : "dom-checkbox"},
+                                { "orderable": false },
+                                { "orderable": false },
+                                { "orderable": false },
+                                { "orderable": false },
+                                { "orderable": false }],
+                    "columnDefs": [
+                        { "orderable": false, "targets": 0 }
+                    ]
+                    } );
                 }
-
             }
+
+            $(window).bind('resize', function () {
+                map.setCenter(currentLocation);
+                $(".dataTables_scrollBody").height($('#map-canvas').height());
+                table.fnDraw();
+            });
 
             function init() {
                 map = new google.maps.Map(document.getElementById('map-canvas'), {zoom: 12});
@@ -303,16 +311,6 @@
         	</select>
         	</div>
 
-            <div id="content">
-                Search:
-                <input type="text" id="search">
-            </div>
-
-            <div class="twitter-share-button">
-            <a href="https://twitter.com/intent/tweet?text=I'm+using+Artly+to+discover+Vancouver's+public+art!"
-            	target="_blank"
-            	onClick="TweetWindow=window.open('https://twitter.com/intent/tweet?text=I'm+using+Artly+to+discover+Vancouver's+public+art!','TweetWindow','width=600,height=250'); return false;">Tweet</a>
-            </div>
             
             <div id="content">
             <button type="button" onclick="saveSelected()">Save Selected Locations</button>
@@ -326,11 +324,12 @@
             <table id="example" class="table table-hover" data-click-to-select="true">
                 <thead>
                 <tr height="10px" id="check-row">
-                        <th width="7.5%"></th>
-                        <th width="7.5%"><img src="http://orig15.deviantart.net/8047/f/2013/245/d/4/little_pixel_heart_by_kawiku-d6ksnjh.gif"></th>
+                        <th width="10%"></th>
+                        <th width="10%"><img src="http://orig15.deviantart.net/8047/f/2013/245/d/4/little_pixel_heart_by_kawiku-d6ksnjh.gif"></th>
                         <th width="50%">Name</th>
                         <th width="25%"><center>Distance (m)</center></th>
                         <th width="15%"><center>Info</center></th>
+                        <th width="8%"><img src="{% static 'images/Twitter_logo_blue.png' %}" width="20" alt="Tweet"/></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -345,7 +344,8 @@
 						<td><img src="http://orig15.deviantart.net/8047/f/2013/245/d/4/little_pixel_heart_by_kawiku-d6ksnjh.gif"></td>
                         <td>{{ artinstallation.name }}</td>
                         <td><center class="distance-{{artinstallation.locationid}}"></center></td>
-                        <td><a href="{{ artinstallation.url }}" target="_blank" id="no-check"><center> > </center></a></td>
+                        <td><a href="{{ artinstallation.url }}" target="_blank" id="no-check"><center> → </center></a></td>
+                        <td><a href="{{ artinstallation.twitterurl }}" target="_blank" id="no-check"><center> → </center></a></td>
                     </tr>
                 {% endfor %}
                 </tbody>

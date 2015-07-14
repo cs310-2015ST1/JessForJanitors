@@ -7,6 +7,7 @@ class ArtInstallation(models.Model):
     lat = models.FloatField(default=49.2508548)
     lon = models.FloatField(default=-123.1174762)
     selected = models.BooleanField(default =False)
+    twitterurl = models.URLField(default="http://www.twitter.com/")
 
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
         return self.name
