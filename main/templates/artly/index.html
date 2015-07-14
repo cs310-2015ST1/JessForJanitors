@@ -55,8 +55,13 @@
                                 { "orderable": false }],
                     "columnDefs": [
                         { "orderable": false, "targets": 0 }
-                    ]
+                    ],
+                    "language": {
+                        "sSearch": ""
+                    }
                     } );
+
+                    $('div.dataTables_filter input').attr('placeholder', 'Search...');
                 }
             }
 
