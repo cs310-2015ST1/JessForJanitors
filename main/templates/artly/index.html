@@ -72,7 +72,7 @@
             });
 
             function init() {
-                map = new google.maps.Map(document.getElementById('map-canvas'), {zoom: 12});
+                map = new google.maps.Map(document.getElementById('map-canvas'), {zoom: 12, minZoom: 10, maxZoom: 18});
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
                         currentLocation = new google.maps.LatLng(position.coords.latitude,
@@ -93,24 +93,25 @@
                     // Browser doesn't support Geolocation
                     handleNoGeolocation(false);
                 }
-                function handleNoGeolocation(errorFlag) {
-                    if (errorFlag) {
-                        var content = 'Error: The Geolocation service failed.';
-                    } else {
-                        var content = 'Error: Your browser doesn\'t support geolocation.';
-                    }
-
-                    currentLocation = new google.maps.LatLng(49.2508548, -123.1174762);
-                    var options = {
-                        map: map,
-                        position: new google.maps.LatLng(49.2508548, -123.1174762),
-                        content: content
-                    };
-                    var infowindow = new google.maps.InfoWindow(options);
-                    map.setCenter(options.position);
-                    plotWidgets();
-                }
             }
+
+            function handleNoGeolocation(errorFlag) {
+                if (errorFlag) {
+                    var content = 'Error: The Geolocation service failed.';
+                } else {
+                    var content = 'Error: Your browser doesn\'t support geolocation.';
+                }
+                currentLocation = new google.maps.LatLng(49.2508548, -123.1174762);
+                var options = {
+                    map: map,
+                    position: new google.maps.LatLng(49.2508548, -123.1174762),
+                    content: content
+                };
+                var infowindow = new google.maps.InfoWindow(options);
+                map.setCenter(options.position);
+                plotWidgets();
+            }
+
 
             function distance(lat1, lon1, lat2, lon2) {
                 var radlat1 = Math.PI * lat1/180
