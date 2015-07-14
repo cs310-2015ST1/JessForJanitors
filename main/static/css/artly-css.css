@@ -68,3 +68,11 @@
 #example {
 	visibility: hidden;
 }
+
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+#logo {
+   font-family: 'Rock Salt', cursive;
+}
