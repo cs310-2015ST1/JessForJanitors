@@ -69,6 +69,23 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+   'django.contrib.auth.context_processors.auth',
+   'django.core.context_processors.debug',
+   'django.core.context_processors.i18n',
+   'django.core.context_processors.media',
+   'django.core.context_processors.static',
+   'django.core.context_processors.tz',
+   'django.contrib.messages.context_processors.messages',
+   'social.apps.django_app.context_processors.backends',
+   'social.apps.django_app.context_processors.login_redirect',
+)
+
+AUTHENTICATION_BACKENDS = (
+   'social.backends.google.GoogleOAuth2',
+   'django.contrib.auth.backends.ModelBackend',
+)
+
 ROOT_URLCONF = 'main.urls'
 
 WSGI_APPLICATION = 'main.wsgi.application'
@@ -103,8 +120,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-GOOGLE_OAUTH2_CLIENT_ID = '104251976447-6j4tomr6jsoio5tgr8bub09j2nnkj5go'
-GOOGLE_OAUTH2_CLIENT_SECRET  = 'Jm_B7rGoJlinXz0GxqDYR8_J'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '104251976447-6j4tomr6jsoio5tgr8bub09j2nnkj5go'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'Jm_B7rGoJlinXz0GxqDYR8_J'
 
-AUTHENTICATION_BACKENDS = (
-    'social.backends.google.GoogleOAuth2',)
+LOGIN_REDIRECT_URL = '/'
