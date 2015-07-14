@@ -28,6 +28,11 @@
             var currentLocation;
             var table;
 
+            var allowedBounds = new google.maps.LatLngBounds(
+                new google.maps.LatLng(49.186972, -123.291455),
+                new google.maps.LatLng(49.322768, -123.006497)
+            );
+
             var tableHeight = window.innerHeight - 300;
 
             //alert(tableHeight + "px");
@@ -72,7 +77,7 @@
             });
 
             function init() {
-                map = new google.maps.Map(document.getElementById('map-canvas'), {zoom: 12, minZoom: 10, maxZoom: 18});
+                map = new google.maps.Map(document.getElementById('map-canvas'), {zoom: 12, minZoom: 10, maxZoom: 16});
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
                         currentLocation = new google.maps.LatLng(position.coords.latitude,
@@ -92,6 +97,30 @@
                 } else {
                     // Browser doesn't support Geolocation
                     handleNoGeolocation(false);
+                }
+
+                google.maps.event.addListener(map,'drag',function() {
+                    checkBounds();
+                });
+            }
+
+            function checkBounds() {
+                if(! allowedBounds.contains(map.getCenter())) {
+                    var C = map.getCenter();
+                    var X = C.lng();
+                    var Y = C.lat();
+
+                    var AmaxX = allowedBounds.getNorthEast().lng();
+                    var AmaxY = allowedBounds.getNorthEast().lat();
+                    var AminX = allowedBounds.getSouthWest().lng();
+                    var AminY = allowedBounds.getSouthWest().lat();
+
+                    if (X < AminX) {X = AminX;}
+                    if (X > AmaxX) {X = AmaxX;}
+                    if (Y < AminY) {Y = AminY;}
+                    if (Y > AmaxY) {Y = AmaxY;}
+
+                    map.panTo(new google.maps.LatLng(Y,X));
                 }
             }
 
@@ -299,6 +328,7 @@
             	{% endfor %}
             	alert('Success! ' + selectedCount + ' locations saved.');
             }
+
 
         </script>
     </head>
