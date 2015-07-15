@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class ArtInstallation(models.Model):
     locationid = models.CharField(max_length=128, unique=True)
@@ -13,5 +14,5 @@ class ArtInstallation(models.Model):
         return self.name
 
 class UserInformation(models.Model):
-    userid = models.CharField(max_length=128, unique=True)
+    user = models.OneToOneField(User)
     savedinstallations = models.ManyToManyField(ArtInstallation)
