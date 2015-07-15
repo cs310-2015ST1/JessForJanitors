@@ -3,6 +3,9 @@ from django.http import HttpResponse
 from artly.models import ArtInstallation
 from artly.models import UserInformation
 
+from django.shortcuts import render_to_response
+from django.template.context import RequestContext
+
 def index(request):
     # Query the database for a list of ALL categories currently stored.
     # Order the categories by name
@@ -56,3 +59,10 @@ def click_save(request):
             else:
                 UserInformation.savedinstallations.remove(installation)
     return HttpResponse(installation.name)
+
+def home(request):
+   context = RequestContext(request,
+                           {'request': request,
+                            'user': request.user})
+   return render_to_response('artly/login-home.html',
+                             context_instance=context)
