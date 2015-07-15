@@ -363,9 +363,9 @@
             <div id="datatable">
             <table id="example" class="table table-hover" data-click-to-select="true">
                 <thead>
-                <tr height="10px" id="check-row">
-                        <th width="10%"></th>
-                        <th width="10%"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></th>
+                <tr height="10px">
+                        <th width="0%" id="check-column"></th>
+                        <th width="10%"><center><span class="glyphicon glyphicon-heart" aria-hidden="true"></center></th>
                         <th width="50%">Name</th>
                         <th width="25%"><center>Distance (m)</center></th>
                         <th width="15%"><center>Info</center></th>
@@ -374,14 +374,14 @@
                 </thead>
                 <tbody>
                 {% for artinstallation in artinstallations %}
-                    <tr id="check-row" class="{{artinstallation.locationid}}">
-                        <td><center><input type="checkbox" id="select" data-installation-name="{{ artinstallation.name }}" /></center></td>
+                    <tr class="{{artinstallation.locationid}}">
+                        <td id="check-column"><center><input type="checkbox" id="select" data-installation-name="{{ artinstallation.name }}" /></center></td>
 <!--                         if UserInformation.objects.filter(savedinstallations__locationid = artinstallation.locationid) -->
 <!--                         	<td><img src="http://orig15.deviantart.net/8047/f/2013/245/d/4/little_pixel_heart_by_kawiku-d6ksnjh.gif"></td> -->
 <!--                         else -->
 <!--                         	<td></td> -->
 <!--                         endif -->
-						<td><i class="heart glyphicon glyphicon-heart-empty" aria-hidden="true"></td>
+						<td><center><i class="heart glyphicon glyphicon-heart-empty" aria-hidden="true"></i></center></td>
                         <td>{{ artinstallation.name }}</td>
                         <td><center class="distance-{{artinstallation.locationid}}"></center></td>
                         <td><a href="{{ artinstallation.url }}" target="_blank" id="no-check"><center><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></center></a></td>
