@@ -1,14 +1,17 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from artly.models import ArtInstallation
-from artly.models import UserInformation
+from artly.models import ArtlyUser
+
+from django.shortcuts import render_to_response
+from django.template.context import RequestContext
 
 def index(request):
     # Query the database for a list of ALL categories currently stored.
     # Order the categories by name
     # Place the list in our context_dict dictionary which will be passed to the template engine.
     art_list = ArtInstallation.objects.order_by('name')
-    saved_list = UserInformation.objects.order_by('name')
+    saved_list = ArtlyUser.objects.order_by('name')
     context_dict = {'artinstallations': art_list, 'savedinstallations': saved_list}
 #     context_dict2 = {'savedinstallations': saved_list}
 
@@ -56,3 +59,10 @@ def click_save(request):
             else:
                 UserInformation.savedinstallations.remove(installation)
     return HttpResponse(installation.name)
+
+def home(request):
+   context = RequestContext(request,
+                           {'request': request,
+                            'user': request.user})
+   return render_to_response('artly/login-home.html',
+                             context_instance=context)
