@@ -15,4 +15,3 @@ class ArtInstallation(models.Model):
 
 class ArtlyUser(models.Model):
     user = models.OneToOneField(User)
-    savedinstallations = models.ManyToManyField(ArtInstallation)
