@@ -42,16 +42,16 @@ def click_installation(request):
     return HttpResponse(installation.name)
 
 def click_save(request):
-    installation_name = None
+    installation_id = None
     if request.method == 'GET':
-        installation_name = request.GET['name']
+        installation_id = request.GET['id']
     
-    if installation_name:
+    if installation_id:
         
-        installation = ArtInstallation.objects.get(name=str(installation_name))
+        installation = ArtInstallation.objects.get(locationid=str(installation_id))
         
         if installation:
-            if installation.selected:
+            if UserInformation.savedinstallations.contains(installation):
                 UserInformation.savedinstallations.add(installation)
             else:
                 UserInformation.savedinstallations.remove(installation)

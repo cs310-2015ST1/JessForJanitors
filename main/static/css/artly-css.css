@@ -32,7 +32,7 @@
 	width: 550px;
 	float: right;
 	position: relative;
-	top: 15px;
+	top: -15px;
 }
 
 #content {
@@ -88,7 +88,7 @@ th {
 }
 
 #space {
-	height: 20px;
+	height: 30px;
 	width: 100%;
 }
 
