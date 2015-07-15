@@ -15,6 +15,7 @@
 .container {
 	padding-top: 20px;
 	width: 90%;
+	min-width: 1050px;
 }
 
 .bar-container {
@@ -30,7 +31,7 @@
 	float: right;
 	/*overflow: scroll;*/
 	position: relative;
-	top: -80px;
+	top: -85px;
 }
 
 #content {
@@ -42,8 +43,6 @@
     height: calc(100vh - 300px); /*readjusts based on screen size*/
 	width: calc(100% - 575px); /*readjusts based on screen size*/
 }
-
-
 
 #radius-dropdown {
 	float: right;
@@ -82,7 +81,6 @@
 
 th {
 	font-size: 1.2em;
-	border-bottom: 1px solid #DDDDDD;
 }
 
 #lower-bar {
