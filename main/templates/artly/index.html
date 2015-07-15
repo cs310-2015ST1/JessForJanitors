@@ -310,12 +310,10 @@
     <body>
 
         <div class="container">
-                <div id="upper-bar">
-                    <div id="upper-left">
-                    <div id="title">
-                        <h1 id="logo">Artly</h1>
-                        <h4>explore Vancouver through public art</h4>
-                    </div>
+            <div id="left">
+            <div id="upper-bar">
+                    <h1 id="logo">Artly</h1>
+                    <h4>explore Vancouver through public art</h4>
 
                     <div id="radius-dropdown">
                         <select name="radiusMenuOption" id="radiusMenuOption" onclick="changeRadius(this)">
@@ -327,13 +325,12 @@
                             <option value="5">< 5 km</option>
                         </select>
                     </div>
-                    </div>
                 </div>
+            <div id="map-canvas"></div>
+            </div>
 
             {% if artinstallations %}
-
-            <div id="content">
-            <div id="map-canvas"></div>
+            <div id="right">
             <div id="datatable">
             <table id="example" class="table table-hover" data-click-to-select="true">
                 <thead>
@@ -365,6 +362,7 @@
                 </tbody>
             </table>
 
+            </div>
             </div>
             </div>
             {% else %}

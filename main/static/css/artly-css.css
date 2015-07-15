@@ -22,16 +22,18 @@
 	width: 90%;
 	margin-left: auto;
 	margin-right: auto;
+	margin-top: auto;
+	margin-bottom :auto;
+}
+
+#right {
 }
 
 #datatable {
 	width: 550px;
-	padding-left: 0px;
-	height: 536px;
 	float: right;
-	/*overflow: scroll;*/
 	position: relative;
-	top: -85px;
+	top: 15px;
 }
 
 #content {
@@ -39,9 +41,7 @@
 }
 
 #map-canvas {
-    float: left;
     height: calc(100vh - 300px); /*readjusts based on screen size*/
-	width: calc(100% - 575px); /*readjusts based on screen size*/
 }
 
 #radius-dropdown {
@@ -85,9 +85,8 @@ th {
 
 #lower-bar {
 	padding-top: 20px;
-	padding-bottom: 20px;
 	width: 100%;
-	height: 30px;
+	height: 150px;
 	background-color: #DDDDDD;
 }
 
@@ -101,13 +100,8 @@ th {
 	width: 100%;
 }
 
-#upper-left {
-	height: 100%;
+#left {
 	width: calc(100% - 575px);
-	float: left;
-}
-
-#artly-title {
 	float: left;
 }
 
