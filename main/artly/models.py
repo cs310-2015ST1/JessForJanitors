@@ -13,6 +13,6 @@ class ArtInstallation(models.Model):
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
         return self.name
 
-class UserInformation(models.Model):
+class ArtlyUser(models.Model):
     user = models.OneToOneField(User)
     savedinstallations = models.ManyToManyField(ArtInstallation)
