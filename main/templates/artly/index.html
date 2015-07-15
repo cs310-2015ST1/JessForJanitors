@@ -20,8 +20,6 @@
         <link href='http://fonts.googleapis.com/css?family=Roboto:300,400,700,900' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Lemon' rel='stylesheet' type='text/css'>
 
-
-
         <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
         <title>Artly - public art in Vancouver</title>
 
@@ -33,6 +31,11 @@
             var distanceWidget;
             var currentLocation;
             var table;
+
+            var allowedBounds = new google.maps.LatLngBounds(
+                new google.maps.LatLng(49.186972, -123.291455),
+                new google.maps.LatLng(49.322768, -123.006497)
+            );
 
             var tableHeight = window.innerHeight - 200;
 
@@ -78,7 +81,7 @@
             });
 
             function init() {
-                map = new google.maps.Map(document.getElementById('map-canvas'), {zoom: 12});
+                map = new google.maps.Map(document.getElementById('map-canvas'), {zoom: 12, minZoom: 10, maxZoom: 16});
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
                         currentLocation = new google.maps.LatLng(position.coords.latitude,
@@ -99,24 +102,49 @@
                     // Browser doesn't support Geolocation
                     handleNoGeolocation(false);
                 }
-                function handleNoGeolocation(errorFlag) {
-                    if (errorFlag) {
-                        var content = 'Error: The Geolocation service failed.';
-                    } else {
-                        var content = 'Error: Your browser doesn\'t support geolocation.';
-                    }
 
-                    currentLocation = new google.maps.LatLng(49.2508548, -123.1174762);
-                    var options = {
-                        map: map,
-                        position: new google.maps.LatLng(49.2508548, -123.1174762),
-                        content: content
-                    };
-                    var infowindow = new google.maps.InfoWindow(options);
-                    map.setCenter(options.position);
-                    plotWidgets();
+                google.maps.event.addListener(map,'drag',function() {
+                    checkBounds();
+                });
+            }
+
+            function checkBounds() {
+                if(! allowedBounds.contains(map.getCenter())) {
+                    var C = map.getCenter();
+                    var X = C.lng();
+                    var Y = C.lat();
+
+                    var AmaxX = allowedBounds.getNorthEast().lng();
+                    var AmaxY = allowedBounds.getNorthEast().lat();
+                    var AminX = allowedBounds.getSouthWest().lng();
+                    var AminY = allowedBounds.getSouthWest().lat();
+
+                    if (X < AminX) {X = AminX;}
+                    if (X > AmaxX) {X = AmaxX;}
+                    if (Y < AminY) {Y = AminY;}
+                    if (Y > AmaxY) {Y = AmaxY;}
+
+                    map.panTo(new google.maps.LatLng(Y,X));
                 }
             }
+
+            function handleNoGeolocation(errorFlag) {
+                if (errorFlag) {
+                    var content = 'Error: The Geolocation service failed.';
+                } else {
+                    var content = 'Error: Your browser doesn\'t support geolocation.';
+                }
+                currentLocation = new google.maps.LatLng(49.2508548, -123.1174762);
+                var options = {
+                    map: map,
+                    position: new google.maps.LatLng(49.2508548, -123.1174762),
+                    content: content
+                };
+                var infowindow = new google.maps.InfoWindow(options);
+                map.setCenter(options.position);
+                plotWidgets();
+            }
+
 
             function distance(lat1, lon1, lat2, lon2) {
                 var radlat1 = Math.PI * lat1/180
@@ -304,6 +332,7 @@
             	{% endfor %}
             	alert('Success! ' + selectedCount + ' locations saved.');
             }
+
 
         </script>
     </head>
