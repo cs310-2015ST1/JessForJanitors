@@ -18,12 +18,11 @@
 	min-width: 1050px;
 }
 
-.bar-container {
+#bar-container {
 	width: 90%;
+	height: 100%;
 	margin-left: auto;
 	margin-right: auto;
-	margin-top: auto;
-	margin-bottom :auto;
 }
 
 #right {
@@ -41,7 +40,7 @@
 }
 
 #map-canvas {
-    height: calc(100vh - 300px); /*readjusts based on screen size*/
+    height: calc(100vh - 200px); /*readjusts based on screen size*/
 }
 
 #radius-dropdown {
@@ -85,8 +84,9 @@ th {
 
 #lower-bar {
 	padding-top: 20px;
+	padding-bottom: 20px;
+	height: 50px;
 	width: 100%;
-	height: 150px;
 	background-color: #DDDDDD;
 }
 
