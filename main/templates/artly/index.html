@@ -336,7 +336,7 @@
                 <thead>
                 <tr height="10px" id="check-row">
                         <th width="10%"></th>
-                        <th width="10%"><img src="http://orig15.deviantart.net/8047/f/2013/245/d/4/little_pixel_heart_by_kawiku-d6ksnjh.gif"></th>
+                        <th width="10%"><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></th>
                         <th width="50%">Name</th>
                         <th width="25%"><center>Distance (m)</center></th>
                         <th width="15%"><center>Info</center></th>
@@ -352,11 +352,11 @@
 <!--                         else -->
 <!--                         	<td></td> -->
 <!--                         endif -->
-						<td><img src="http://orig15.deviantart.net/8047/f/2013/245/d/4/little_pixel_heart_by_kawiku-d6ksnjh.gif"></td>
+						<td><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></td>
                         <td>{{ artinstallation.name }}</td>
                         <td><center class="distance-{{artinstallation.locationid}}"></center></td>
-                        <td><a href="{{ artinstallation.url }}" target="_blank" id="no-check"><center> → </center></a></td>
-                        <td><a href="{{ artinstallation.twitterurl }}" target="_blank" id="no-check"><center> → </center></a></td>
+                        <td><a href="{{ artinstallation.url }}" target="_blank" id="no-check"><center><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></center></a></td>
+                        <td><a href="{{ artinstallation.twitterurl }}" target="_blank" id="no-check"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></td>
                     </tr>
                 {% endfor %}
                 </tbody>
