@@ -1,7 +1,7 @@
 $(document).ready(function() {
 
     $(".table-hover tr").click(function (event) {
-        if (event.target.id !== 'no-check' && event.target.type !== 'checkbox') {
+        if (event.target.tagName !== 'SPAN' && event.target.tagName !== 'INPUT') {
             $(':checkbox', this).trigger('click');
 
             var installation_name;
