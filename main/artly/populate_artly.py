@@ -72,7 +72,7 @@ def add_art(locationid, name, lat, lon, url):
     twiturl = "https://twitter.com/intent/tweet?text=I+discovered+"+name+" using+this+sweet+app+called+Artly!"
     global num_installations
     num_installations += 1
-    a = ArtInstallation.objects.get_or_create(locationid=locationid, name=name, url=url, lat=lat, lon=lon, selected = False, twitterurl = twiturl)[0]
+    a = ArtInstallation.objects.get_or_create(locationid=locationid, name=name, url=url, lat=lat, lon=lon, twitterurl = twiturl)[0]
     return a
 
 # Code below is not needed for button implementation
