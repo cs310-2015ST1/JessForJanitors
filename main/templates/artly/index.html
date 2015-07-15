@@ -304,25 +304,27 @@
     <body>
 
         <div class="container">
-            <h1 id="logo">Artly</h1>
-            <h4>explore Vancouver through public art</h4><br />
-			<div id="radius-dropdown">
-            Radius:
-            <select name="radiusMenuOption" id="radiusMenuOption" onclick="changeRadius(this)">
-        		<option value="none" selected>Everything</option>
-        		<option value="1">1 km</option>
-        		<option value="2">2 km</option>
-        		<option value="3">3 km</option>
-        		<option value="4">4 km</option>
-        		<option value="5">5 km</option>
-        	</select>
-        	</div>
+                <div id="upper-bar">
+                    <div id="upper-left">
+                    <div id="title">
+                        <h1 id="logo">Artly</h1>
+                        <h4>explore Vancouver through public art</h4>
+                    </div>
 
-            
-            <div id="content">
-            <button type="button" onclick="saveSelected()">Save Selected Locations</button>
-            </div>
-            
+                    <div id="radius-dropdown">
+                        Radius:
+                        <select name="radiusMenuOption" id="radiusMenuOption" onclick="changeRadius(this)">
+                            <option value="none" selected>Everything</option>
+                            <option value="1">1 km</option>
+                            <option value="2">2 km</option>
+                            <option value="3">3 km</option>
+                            <option value="4">4 km</option>
+                            <option value="5">5 km</option>
+                        </select>
+                    </div>
+                    </div>
+                </div>
+
             {% if artinstallations %}
 
             <div id="content">
@@ -357,17 +359,27 @@
                 {% endfor %}
                 </tbody>
             </table>
-            </div>
-            </div>
 
+            </div>
+            </div>
             {% else %}
                 <strong>There are no installations to present.</strong>
             {% endif %}
         </div>
+        <div id="space"></div>
+        <div id="lower-bar">
+            <div class="bar-container">
 
-            <!-- for testing purposes-->
+            <div id="fav-butt">
+                <button type="button" onclick="saveSelected()">Favourite</button>
+            </div>
+        </div>
+        </div>
+
+        <!-- for testing purposes-->
             <div id="selection">
                 <span id="installation_name"></span><i> was clicked</i>
+            </div>
             </div>
 
     </body>

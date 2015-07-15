@@ -13,12 +13,14 @@
 }
 
 .container {
-	padding-top: 15px;
+	padding-top: 20px;
 	width: 90%;
 }
 
-#content {
-	padding-top: 0px;
+.bar-container {
+	width: 90%;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 #datatable {
@@ -33,7 +35,6 @@
 
 #content {
 	width: 100%;
-	padding-top: 1%;
 }
 
 #map-canvas {
@@ -42,7 +43,10 @@
 	width: calc(100% - 575px); /*readjusts based on screen size*/
 }
 
+
+
 #radius-dropdown {
+	float: right;
 }
 
 #radiusMenuOption {
@@ -59,10 +63,8 @@
 	padding-left: 40px;
 }
 
-#butt {
-	position: relative;
-	right: -410px;
-	top: -65px;
+#fav-butt {
+	float: right;
 }
 
 #example {
@@ -74,10 +76,48 @@
 }
 
 #logo {
-   font-family: 'Rock Salt', cursive;
+    font-family: 'Rock Salt', cursive;
+    width: 100%;
 }
 
 th {
 	font-size: 1.2em;
 	border-bottom: 1px solid #DDDDDD;
+}
+
+#lower-bar {
+	padding-top: 20px;
+	padding-bottom: 20px;
+	width: 100%;
+	height: 30px;
+	background-color: #DDDDDD;
+}
+
+#space {
+	height: 20px;
+	width: 100%;
+}
+
+#upper-bar {
+	height: 100px;
+	width: 100%;
+}
+
+#upper-left {
+	height: 100%;
+	width: calc(100% - 575px);
+	float: left;
+}
+
+#artly-title {
+	float: left;
+}
+
+h1 {
+	float: left;
+	clear: both;
+}
+
+h4 {
+	float: left;
 }
