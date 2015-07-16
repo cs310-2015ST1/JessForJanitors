@@ -213,6 +213,7 @@
             
             function plotWidgets() {
                 distanceWidget = new DistanceWidget(map);
+                distanceWidget.set('distance', 0);
 
                 updateCurrentLocation(distanceWidget);
 
@@ -223,7 +224,14 @@
                     updateCurrentLocation(distanceWidget);
                 });
                 google.maps.event.addListener(distanceMarker, 'dragend', function () {
-                    updateListDistance();
+                    var distance = distanceWidget.get('distance');
+
+                    if (distance == 0){
+                        showAll();
+                        updateListDistance();
+                    }
+                    else
+                        updateListView(distanceWidget.get('distance'));
                 });
 
 
