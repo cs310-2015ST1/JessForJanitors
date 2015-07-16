@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
 
 class ArtInstallation(models.Model):
     locationid = models.CharField(max_length=128, unique=True)
@@ -14,7 +15,14 @@ class ArtInstallation(models.Model):
 
 class ArtlyUser(models.Model):
     user = models.OneToOneField(User)
-    savedinstallations = models.ManyToManyField(ArtInstallation)
+    savedinstallations = models.ManyToManyField(ArtInstallation, null=True, blank=True)
 
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
         return self.user.username
+
+def create_artly_user(sender, **kwargs):
+    user = kwargs["instance"]
+    if kwargs["created"]:
+        up = ArtlyUser(user=user)
+        up.save()
+post_save.connect(create_artly_user, sender=User)
