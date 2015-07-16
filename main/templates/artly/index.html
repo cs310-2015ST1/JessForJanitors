@@ -226,6 +226,10 @@
                         map: map
                     });
 
+                    google.maps.event.addListener(markers[index], 'click', function() {
+                        $('.{{artinstallation.locationid}}').trigger('click');
+                    });
+
                 {% endfor %}
                 updateListView(50);
                 test();
