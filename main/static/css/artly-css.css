@@ -15,8 +15,8 @@
 
 .container {
 	padding-top: 0px;
-	width: 90%;
-	min-width: 1050px;
+	width: 95%;
+	min-width: 1150px;
 }
 
 #bar-container {
@@ -34,7 +34,7 @@
 	width: 550px;
 	float: right;
 	position: relative;
-	top: 0px;
+	top: 3px;
 }
 
 #content {
@@ -47,7 +47,7 @@
 }
 
 #radius-dropdown {
-	float: right;
+	padding-left: 10px;
 }
 
 #radiusMenuOption {
@@ -72,13 +72,9 @@
     font-family: 'Roboto', sans-serif;
 }
 
-#logo {
+#artly {
     font-family: 'Rock Salt', cursive;
     width: 100%;
-}
-
-th {
-	font-size: 1.2em;
 }
 
 #lower-bar {
@@ -107,11 +103,6 @@ th {
 
 h1 {
 	float: left;
-	clear: both;
-}
-
-h4 {
-	float: left;
 }
 
 #check-column {
@@ -125,4 +116,25 @@ ul
 
 #login {
 	float: right;
+}
+
+#subtitle {
+	font-size: 1.2em;
+}
+
+#map-controls {
+	float: right;
+}
+
+#logo {
+	float: left;
+	width: 50%;
+}
+
+#space1 {
+	height: 60px;
+}
+
+#space2 {
+	height: 10px;
 }

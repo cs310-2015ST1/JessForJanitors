@@ -6,12 +6,14 @@
 <html>
     <head>
 
+        <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+        <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
         <!--Bootstrap-->
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
         <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" media="screen">
 
         <link href="{% static 'css/artly-css.css' %}" rel="stylesheet">
-        <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
         <!-- <script src="{% static 'js/artly-jquery.js' %}"></script> -->
         <script src="{% static 'js/artly-ajax.js' %}"></script>
         <script src="//cdn.datatables.net/1.10.7/js/jquery.dataTables.min.js"></script>
@@ -76,10 +78,14 @@
             }
 
             $(window).bind('resize', function () {
-                map.setCenter(currentLocation);
+                centerMap();
                 $(".dataTables_scrollBody").height($('#map-canvas').height());
                 table.fnDraw();
             });
+
+            function centerMap() {
+                map.setCenter(currentLocation);
+            }
 
             function init() {
                 map = new google.maps.Map(document.getElementById('map-canvas'), {zoom: 12, minZoom: 10, maxZoom: 16});
@@ -289,10 +295,10 @@
             /**
  			* Set the distance of the circle based on the dropdown.
  			*/
-            function changeRadius(sel) {
+            function changeRadius(value) {
       			//alert("in change radius");
-      			updateListView(sel.value);
-      			distanceWidget.set('distance', sel.value);
+      			updateListView(value);
+      			distanceWidget.set('distance', value);
       		}
 
       		function updateCurrentLocation(widget){
@@ -341,20 +347,36 @@
         <div class="container">
             <div id="left">
             <div id="upper-bar">
-                    <h1 id="logo">Artly</h1>
-                    <h4>explore Vancouver through public art</h4>
+                    <div id="logo">
+                        <div id="space2"></div>
+                        <h1 id="artly">Artly</h1>
+                        <p id="subtitle">explore Vancouver through public art</p>
+                    </div>
 
-                    <div id="radius-dropdown">
-                        <select name="radiusMenuOption" id="radiusMenuOption" onclick="changeRadius(this)">
-                            <option value="none" selected>Everything</option>
-                            <option value="1">< 1 km</option>
-                            <option value="2">< 2 km</option>
-                            <option value="3">< 3 km</option>
-                            <option value="4">< 4 km</option>
-                            <option value="5">< 5 km</option>
-                        </select>
+                    <div id="map-controls">
+                    <div id="space1"></div>
+                        <button id="centerMap" type="button" class="btn btn-default btn-lg" onclick="centerMap()">
+                        <center><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Center Map</center>
+                    </button>
+
+                    <!-- Split button -->
+                    <div class="btn-group" id="radius-dropdown">
+                      <button type="button" class="btn" onclick="changeRadius()"><center><span class="glyphicon glyphicon-record" aria-hidden="true"></span> Show All</center></button>
+                      <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                      </button>
+                      <ul class="dropdown-menu">
+                        <li class="dropdown-header">How far can you travel?</li>
+                          <li onclick="changeRadius(1)"><a href="#">1 km</a></li>
+                        <li onclick="changeRadius(2)"><a href="#">2 km</a></li>
+                          <li onclick="changeRadius(3)"><a href="#">3 km</a></li>
+                          <li onclick="changeRadius(4)"><a href="#">4 km</a></li>
+                          <li onclick="changeRadius(5)"><a href="#">5 km</a></li>
+                      </ul>
                     </div>
                 </div>
+            </div>
             <div id="map-canvas"></div>
             </div>
 
