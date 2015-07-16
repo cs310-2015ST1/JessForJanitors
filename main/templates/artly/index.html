@@ -430,7 +430,7 @@
                         <ul>
                         {% if user and not user.is_anonymous %}
                                 Hello {{ user.get_full_name|default:user.username }}! //
-                                <a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a>
+                                <a href="{% url 'auth:logout' %}?next=/artly">Logout</a>
                         {% else %}
                                 <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Login with Google</a>
                         {% endif %}
