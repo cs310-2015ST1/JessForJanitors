@@ -1,6 +1,3 @@
-__author__ = 'sara'
-
-
 class ArtInfo:
 
     name = ""

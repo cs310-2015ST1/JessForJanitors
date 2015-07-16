@@ -5,8 +5,8 @@ import xml.etree.ElementTree as ET
 import os
 from django.http import HttpResponse
 import django
-from artly.models import ArtInstallation
-from artinfo import ArtInfo
+from models import ArtInstallation
+import ArtInfo
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'main.settings')
 django.setup()
@@ -63,7 +63,6 @@ def parseArt(kml):
             artlist.append(ArtInfo(name, lat, lon, url))
 
     return artlist
-
 
 
 def add_art(locationid, name, lat, lon, url):
