@@ -17,4 +17,4 @@ class ArtlyUser(models.Model):
     savedinstallations = models.ManyToManyField(ArtInstallation)
 
     def __unicode__(self):  #For Python 2, use __str__ on Python 3
-        return self.user
+        return self.user.username
