@@ -44,6 +44,7 @@
 #map-canvas {
     height: calc(100vh - 200px); /*readjusts based on screen size*/
     min-height: 300px;
+    max-width: none;
 }
 
 #radius-dropdown {

@@ -400,6 +400,7 @@
                     </div>
                 </div>
             </div>
+
             <div id="map-canvas"></div>
             </div>
 
@@ -431,7 +432,7 @@
                 </thead>
                 <tbody>
                 {% for artinstallation in artinstallations %}
-                    <tr data-installation-id="{{artinstallation.locationid}}">
+                    <tr class="{{artinstallation.locationid}}" data-installation-id="{{artinstallation.locationid}}">
                         <td id="check-column"><center><input type="checkbox" id="select" data-installation-name="{{ artinstallation.name }}" data-installation-id="{{ artinstallation.locationid }}" /></center></td>
 <!--                         if UserInformation.objects.filter(savedinstallations__locationid = artinstallation.locationid) -->
 <!--                         	<td><img src="http://orig15.deviantart.net/8047/f/2013/245/d/4/little_pixel_heart_by_kawiku-d6ksnjh.gif"></td> -->
