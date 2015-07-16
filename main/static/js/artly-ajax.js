@@ -13,10 +13,10 @@ $(document).ready(function() {
             index = parseInt($(':checkbox', this).attr("data-installation-id").substring(4) - 1);
 
             if(checked) {
-                $(".heart", this).addClass('glyphicon-heart').removeClass('glyphicon-heart-empty');
+                //$(".heart", this).addClass('glyphicon-heart').removeClass('glyphicon-heart-empty');
                 markers[index].setIcon(highlightedIcon());
             } else {
-                $(".heart", this).addClass('glyphicon-heart-empty').removeClass('glyphicon-heart');
+                //$(".heart", this).addClass('glyphicon-heart-empty').removeClass('glyphicon-heart');
                 markers[index].setIcon(normalIcon());
             }
 
