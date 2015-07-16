@@ -46,8 +46,6 @@
             //alert(tableHeight + "px");
 
             function createTable() {
-
-                if(table == null) {
                     /* Make table visible */
                     var list = document.getElementById("example");
                     list.style.visibility = "visible";
@@ -55,6 +53,7 @@
                     /* Initialize data table */
                     table = $("#example").dataTable( {
                     "paging": false,
+                    "destroy": true,
                     "scrollY": tableHeight + "px",
                     "order": [[ 3, "asc" ]],
                     "bInfo": false,
@@ -76,8 +75,6 @@
                     } );
 
                     $('div.dataTables_filter input').attr('placeholder', 'Search...');
-                }
-
             }
 
             $(window).bind('resize', function () {
@@ -205,9 +202,7 @@
                 $(".distance-{{artinstallation.locationid}}").html(distan_string);
                 {% endfor %}
 
-                var table = $('#example').DataTable();
-                table.order([3,'asc']).draw();
-
+                createTable();
             }
 
             function showAll() {
@@ -367,13 +362,6 @@
                 } );
             }
 
-            function sortCheck(){
-                var table = $('#example').DataTable();
-
-                table
-                    .order( [ 0, 'desc' ], [ 3, 'asc' ] )
-                    .draw();
-            }
             
             function saveSelected() {
 				var selectedCount = 0;
