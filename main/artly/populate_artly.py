@@ -6,7 +6,7 @@ import os
 from django.http import HttpResponse
 import django
 from artly.models import ArtInstallation
-import ArtInfo
+from artinfo import ArtInfo
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'main.settings')
 django.setup()
@@ -26,9 +26,16 @@ def populate(x):
     kmz = zipfile.ZipFile(fileobject, 'r')
     kml = kmz.open(filename, 'r')
     artlist = parseArt(kml)
+
     for art in artlist:
         add_art("loc_"+str(id), art.name, art.lat, art.lon, art.url)
         id+=1
+
+    global num_installations
+    response = "Success! Welcome to the Artly Art Installation Database, population: " + str(num_installations)
+    num_installations = 0
+    return HttpResponse(response)
+
 
 def parseArt(kml):
     tree = ET.parse(kml)
@@ -58,14 +65,6 @@ def parseArt(kml):
     return artlist
 
 
-    global num_installations
-    response = "Success! Welcome to the Artly Art Installation Database, population: " + str(num_installations)
-    num_installations = 0
-    return HttpResponse(response)
-
-    # Print out what we have added to the user.
-    for c in ArtInstallation.objects.all():
-        print "- {0}".format(str(c))
 
 def add_art(locationid, name, lat, lon, url):
     # add 1 to number of installations added
