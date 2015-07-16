@@ -33,6 +33,7 @@
             var distanceWidget;
             var currentLocation;
             var table;
+            var markers = [];
 
             var allowedBounds = new google.maps.LatLngBounds(
                 new google.maps.LatLng(49.186972, -123.291455),
@@ -212,18 +213,40 @@
                 google.maps.event.addListener(distanceWidget, 'position_changed', function () {
                     updateCurrentLocation(distanceWidget);
                 });
+
+                var index;
+
                 {% for artinstallation in artinstallations %}
-                    var marker = new google.maps.Marker({
+
+                    index = parseInt("{{artinstallation.locationid}}".substring(4)) - 1;
+
+                    markers[index] = new google.maps.Marker({
                         position: {lat: {{ artinstallation.lat }}, lng: {{ artinstallation.lon }}},
-                        icon: {
-                            path: google.maps.SymbolPath.CIRCLE,
-                            scale:3,
-                            strokeColor:"#4884AB"},
+                        icon: normalIcon(),
                         map: map
-                    })
+                    });
+
                 {% endfor %}
                 updateListView(50);
+                test();
             }
+
+            function test() {
+                alert(markers[347].position + '');
+            }
+
+            function normalIcon() {
+                return {
+                    url: 'http://i.imgur.com/lFYWeEE.png'
+                };
+            }
+
+            function highlightedIcon() {
+                return {
+                    url: 'http://i.imgur.com/7Oa0wBb.png'
+                };
+            }
+
             /**
             * A distance widget that will display a circle that can be resized and will
             * provide the radius in km.
@@ -408,7 +431,7 @@
                 </thead>
                 <tbody>
                 {% for artinstallation in artinstallations %}
-                    <tr class="{{artinstallation.locationid}}">
+                    <tr data-installation-id="{{artinstallation.locationid}}">
                         <td id="check-column"><center><input type="checkbox" id="select" data-installation-name="{{ artinstallation.name }}" data-installation-id="{{ artinstallation.locationid }}" /></center></td>
 <!--                         if UserInformation.objects.filter(savedinstallations__locationid = artinstallation.locationid) -->
 <!--                         	<td><img src="http://orig15.deviantart.net/8047/f/2013/245/d/4/little_pixel_heart_by_kawiku-d6ksnjh.gif"></td> -->
