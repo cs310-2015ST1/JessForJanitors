@@ -34,20 +34,4 @@ $(document).ready(function() {
         sortByCheckbox();
     });
 
-    $('#markers_info .marker').hover(
-      // mouse in
-      function () {
-        // first we need to know which <div class="marker"></div> we hovered
-        var index = $('#markers_info .marker').index(this);
-        markers[index].setIcon(highlightedIcon());
-      },
-      // mouse out
-      function () {
-        // first we need to know which <div class="marker"></div> we hovered
-        var index = $('#markers_info .marker').index(this);
-        markers[index].setIcon(normalIcon());
-      }
-
-    );
-
 });

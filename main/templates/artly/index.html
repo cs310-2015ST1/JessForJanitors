@@ -103,8 +103,14 @@
                 map = new google.maps.Map(document.getElementById('map-canvas'), {zoom: 12, minZoom: 10, maxZoom: 16});
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
-                        currentLocation = new google.maps.LatLng(position.coords.latitude,
-                                position.coords.longitude);
+
+                        if (position.coords.latitude > 49.186972 && position.coords.latitude < 49.322768 &&
+                                position.coords.longitude > -123.006497 && position.coords.longitude < -123.006497) {
+                            currentLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                        } else {
+                            currentLocation = new google.maps.LatLng(49.2508548, -123.1174762);
+                        }
+
                         var pos = new google.maps.LatLng(position.coords.latitude,
                                 position.coords.longitude);
                         var infowindow = new google.maps.InfoWindow({
