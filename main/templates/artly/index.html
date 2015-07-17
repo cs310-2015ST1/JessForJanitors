@@ -451,10 +451,12 @@
                         selectedCount+=1;
                     }
 
-                    alert('Success! ' + selectedCount + ' locations updated to Favourites.');
+                    alert('Success! ' + selectedCount + ' locations saved');
                 {% else %}
                     alert('You need to log into Artly with your Google Account to access this feature.');
                 {% endif %}
+
+                deselectAll();
             }
 
             function post(path, params, method) {
@@ -514,7 +516,7 @@
             <div id="upper-bar">
                     <div id="logo">
                         <div id="space2"></div>
-                        <h1 id="artly">Artly</h1>
+                        <h1 id="artly"></br></h1>
                         <p id="subtitle">explore Vancouver through public art</p>
                     </div>
 
@@ -623,7 +625,10 @@
                 </div>
 
             </div>
-            </div>
+
+        <img id="stebo-logo" src="{% static 'images/title4.png' %}" width="20" alt="Tweet" />
+
+        </div>
             {% else %}
                 <strong>There are no installations to present.</strong>
             {% endif %}
