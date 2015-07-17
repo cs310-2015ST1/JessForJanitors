@@ -19,6 +19,8 @@ $(document).ready(function() {
                 //$(".heart", this).addClass('glyphicon-heart-empty').removeClass('glyphicon-heart');
                 markers[index].setIcon(normalIcon());
             }
+
+            updateSelectedCount();
          }
     });
 

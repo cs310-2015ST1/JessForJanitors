@@ -20,7 +20,7 @@
 }
 
 #bar-container {
-	padding-top: 30px;
+	height: 30px;
 }
 
 #right {
@@ -200,4 +200,15 @@ table th {
 
 .table th, .table td {
      border-top: none !important;
+}
+
+#counts-space {
+	float: left;
+	width: 32px;
+	height: 30px;
+}
+
+#counts {
+	top: 5px;
+	float: left;
 }
