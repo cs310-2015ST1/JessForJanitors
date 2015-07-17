@@ -208,7 +208,12 @@ table th {
 	height: 30px;
 }
 
-#counts {
+#count-div {
 	top: 5px;
 	float: left;
+}
+
+#count-space-above {
+	width: 20px;
+	height: 5px;
 }
