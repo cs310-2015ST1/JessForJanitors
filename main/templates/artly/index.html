@@ -96,7 +96,7 @@
             });
 
             function centerMap() {
-                map.setCenter(currentLocation);
+                map.panTo(currentLocation);
             }
 
             function init() {
@@ -359,12 +359,32 @@
 			RadiusWidget.prototype.distance_changed = function() {
   				this.set('radius', this.get('distance') * 1000);
 			};
+
+			function deselectAll() {
+			    $('tr').filter(':has(:checkbox:checked)').each(function() {
+                    $(this).removeClass("success");
+                });
+
+      			var rowCollection = table.$(".checkbox:checked", {"page": "all"});
+
+      			var index;
+
+                for (i = 0; i < rowCollection.length; i++) {
+                    index = parseInt(rowCollection[i].getAttribute("data-installation-id").substring(4)) - 1;
+                    markers[index].setIcon(normalIcon());
+                    rowCollection[i].checked = false;
+                }
+			}
+
 			
             /**
  			* Set the distance of the circle based on the dropdown.
  			*/
             function changeRadius(value) {
-      			//alert("in change radius");
+
+      			deselectAll();
+
+      			centerMap();
       			updateListView(value);
       			distanceWidget.set('distance', value);
       		}
