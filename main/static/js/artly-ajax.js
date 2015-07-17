@@ -19,21 +19,6 @@ $(document).ready(function() {
                 //$(".heart", this).addClass('glyphicon-heart-empty').removeClass('glyphicon-heart');
                 markers[index].setIcon(normalIcon());
             }
-
-            var installation_name;
-
-            installation_name = $(':checkbox', this).attr("data-installation-name");
-            installation_id = $(':checkbox', this).attr("data-installation-id");
-
-            $.get('/artly/click_installation/', {name: installation_name}, function(data){
-               /*Return name back just for testing purposes*/
-               $('#installation_name').html(data);
-            });
-
-            $.get('/artly/click_save/', {id: installation_id}, function(data){
-                /*Return name back just for testing purposes*/
-                $('#installation_id').html(data);
-            });
          }
     });
 
