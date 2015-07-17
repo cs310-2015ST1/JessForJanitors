@@ -474,9 +474,24 @@
 
             function updateSelectedCount() {
                 var selectedRows = table.$(".checkbox:checked", {"page": "all"}).length;
-                var count = $('#example tr:visible').length;
+                var count = $('#example tr:visible').length - 1;
                 var selectedOf = selectedRows + " of " + count + " selected";
                 $('#counts').html(selectedOf);
+            }
+
+            function showFavourites() {
+
+                {% for artinstallation in artinstallations %}
+
+                    var heart =  $('#favourite-{{artinstallation.locationid}}').attr('class');
+
+                    if (heart == "heart glyphicon glyphicon-heart-empty") {
+                        $('.{{artinstallation.locationid}}').hide();
+                    }
+
+                {% endfor %}
+
+                updateSelectedCount();
             }
 
 
@@ -512,6 +527,8 @@
                           <li onclick="changeRadius(3)"><a>3 km</a></li>
                           <li onclick="changeRadius(4)"><a>4 km</a></li>
                           <li onclick="changeRadius(5)"><a>5 km</a></li>
+                          <li class="dropdown-header"></li>
+                          <li onclick="showFavourites()"><a>Show Favourites</a></li>
                       </ul>
                     </div>
                 </div>
