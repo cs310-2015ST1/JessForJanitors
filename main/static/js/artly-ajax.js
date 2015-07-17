@@ -46,7 +46,7 @@ $(document).ready(function() {
             checked = false;
         }
 
-        sortCheck();
+        sortByCheckbox();
     });
 
     $('#markers_info .marker').hover(
