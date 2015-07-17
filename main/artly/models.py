@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 
+
 class ArtInstallation(models.Model):
     locationid = models.CharField(max_length=128, unique=True)
     name = models.CharField(max_length=128)

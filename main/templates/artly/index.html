@@ -31,6 +31,7 @@
         <script type="text/javascript">
             var map;
             var distanceWidget;
+            var distanceMarker;
             var currentLocation;
             var table;
             var markers = [];
@@ -45,8 +46,6 @@
             //alert(tableHeight + "px");
 
             function createTable() {
-
-                if(table == null) {
                     /* Make table visible */
                     var list = document.getElementById("example");
                     list.style.visibility = "visible";
@@ -54,6 +53,7 @@
                     /* Initialize data table */
                     table = $("#example").dataTable( {
                     "paging": false,
+                    "destroy": true,
                     "scrollY": tableHeight + "px",
                     "order": [[ 3, "asc" ]],
                     "bInfo": false,
@@ -75,7 +75,6 @@
                     } );
 
                     $('div.dataTables_filter input').attr('placeholder', 'Search...');
-                }
             }
 
             $(window).bind('resize', function () {
@@ -172,10 +171,6 @@
             function updateListView(dis){
                 var radius = dis * 1000;
                 
-                //var radius = distanceWidget.get('distance') * 1000;
-                
-                //alert(radius);
-                
                 {% for artinstallation in artinstallations %}
                 var distan = distance(currentLocation.lat(), currentLocation.lng(), {{artinstallation.lat}}, {{artinstallation.lon}})
 
@@ -196,6 +191,20 @@
                 
             }
 
+            function updateListDistance(){
+                {% for artinstallation in artinstallations %}
+                var distan = distance(currentLocation.lat(), currentLocation.lng(), {{artinstallation.lat}}, {{artinstallation.lon}})
+
+				//alert(distance(map.getCenter().lat(), map.getCenter().lng(), {{artinstallation.lat}}, {{artinstallation.lon}}));
+
+                var distan_round = Math.round(distan);
+                var distan_string = distan_round.toString()
+                $(".distance-{{artinstallation.locationid}}").html(distan_string);
+                {% endfor %}
+
+                createTable();
+            }
+
             function showAll() {
             	{% for artinstallation in artinstallations %}
     	        	$('.{{artinstallation.locationid}}').show();
@@ -204,6 +213,7 @@
             
             function plotWidgets() {
                 distanceWidget = new DistanceWidget(map);
+                distanceWidget.set('distance', 0);
 
                 updateCurrentLocation(distanceWidget);
 
@@ -213,6 +223,17 @@
                 google.maps.event.addListener(distanceWidget, 'position_changed', function () {
                     updateCurrentLocation(distanceWidget);
                 });
+                google.maps.event.addListener(distanceMarker, 'dragend', function () {
+                    var distance = distanceWidget.get('distance');
+
+                    if (distance == 0){
+                        showAll();
+                        updateListDistance();
+                    }
+                    else
+                        updateListView(distanceWidget.get('distance'));
+                });
+
 
                 var index;
 
@@ -262,18 +283,19 @@
             function DistanceWidget(map) {
                 this.set('map', map);
                 this.set('position', map.getCenter());
-                var marker = new google.maps.Marker({
+                distanceMarker = new google.maps.Marker({
                     icon: {
                         path: google.maps.SymbolPath.CIRCLE,
                         scale: 5
                     },
-                    draggable: false,
+                    draggable: true,
                     title: 'Move me to change your current position'
                 });
+
                 // Bind the marker map property to the DistanceWidget map property
-                marker.bindTo('map', this);
+                distanceMarker.bindTo('map', this);
                 // Bind the marker position property to the DistanceWidget position property
-                marker.bindTo('position', this);
+                distanceMarker.bindTo('position', this);
                 // Create a new radius widget
                 var radiusWidget = new RadiusWidget();
                 // Bind the radiusWidget map to the DistanceWidget map
@@ -348,13 +370,6 @@
                 } );
             }
 
-            function sortCheck(){
-                var table = $('#example').DataTable();
-
-                table
-                    .order( [ 0, 'desc' ], [ 3, 'asc' ] )
-                    .draw();
-            }
             
             function saveSelected() {
 				var selectedCount = 0;
@@ -415,7 +430,7 @@
                         <ul>
                         {% if user and not user.is_anonymous %}
                                 Hello {{ user.get_full_name|default:user.username }}! //
-                                <a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a>
+                                <a href="{% url 'auth:logout' %}?next=/artly">Logout</a>
                         {% else %}
                                 <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ request.path }}">Login with Google</a>
                         {% endif %}

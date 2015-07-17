@@ -6,7 +6,7 @@ import os
 from django.http import HttpResponse
 import django
 from models import ArtInstallation
-import ArtInfo
+import artinfo
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'main.settings')
 django.setup()
@@ -25,7 +25,7 @@ def populate(x):
     fileobject, _ = urllib.urlretrieve(url)
     kmz = zipfile.ZipFile(fileobject, 'r')
     kml = kmz.open(filename, 'r')
-    artlist = parseArt(kml)
+    artlist = parseart(kml)
 
     for art in artlist:
         add_art("loc_"+str(id), art.name, art.lat, art.lon, art.url)
@@ -37,7 +37,7 @@ def populate(x):
     return HttpResponse(response)
 
 
-def parseArt(kml):
+def parseart(kml):
     tree = ET.parse(kml)
     root = tree.getroot()
 
@@ -60,7 +60,7 @@ def parseArt(kml):
             second_comma = coordinates.find(',',first_comma+1)
             lon = coordinates[0:first_comma]
             lat = coordinates[first_comma+1:second_comma]
-            artlist.append(ArtInfo(name, lat, lon, url))
+            artlist.append(artinfo(name, lat, lon, url))
 
     return artlist
 
