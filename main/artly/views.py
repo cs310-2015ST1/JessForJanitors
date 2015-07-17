@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from artly.models import ArtInstallation
 from artly.models import ArtlyUser
@@ -11,9 +12,13 @@ def index(request):
     # Order the categories by name
     # Place the list in our context_dict dictionary which will be passed to the template engine.
     art_list = ArtInstallation.objects.order_by('name')
-    saved_list = ArtlyUser.objects.order_by('name')
-    context_dict = {'artinstallations': art_list, 'savedinstallations': saved_list}
-#     context_dict2 = {'savedinstallations': saved_list}
+
+    if request.user.is_authenticated():
+        profile = request.user.artlyuser
+        saved_list = profile.savedinstallations.all()
+        context_dict = {'artinstallations': art_list, 'savedinstallations': saved_list}
+    else:
+        context_dict = {'artinstallations': art_list}
 
     # Render the response and send it back!
     return render(request, 'artly/index.html', context_dict)
@@ -25,44 +30,24 @@ def map(request):
 
     return render(request, 'artly/map.html', context_dict)
 
-def click_installation(request):
-    installation_name = None
-    if request.method == 'GET':
-        installation_name = request.GET['name']
+@csrf_exempt
+def toggle_favourite(request):
 
-    if installation_name:
+    profile = request.user.artlyuser
 
-        # get the installation
-        installation = ArtInstallation.objects.get(name=str(installation_name))
+    if request.method == 'POST':
+        locationid = request.POST['locationid']
 
-        # flip the installation's selected boolean
-        if installation:
-            if installation.selected:
-                installation.selected = False
-            else:
-                installation.selected = True
+    if locationid:
+        if profile.savedinstallations.filter(locationid=locationid).exists():
+            profile.savedinstallations.through.objects.filter(artinstallation=profile.savedinstallations.filter(locationid=locationid)[:1].get(),artlyuser=profile).delete();
+        else:
+            art = ArtInstallation.objects.filter(locationid=locationid)[:1].get()
+            art.save()
+            profile.savedinstallations.add(art)
+            profile.save()
 
-    return HttpResponse(installation.name)
+    return HttpResponse("saved")
 
-def click_save(request):
-    installation_id = None
-    if request.method == 'GET':
-        installation_id = request.GET['id']
-    
-    if installation_id:
-        
-        installation = ArtInstallation.objects.get(locationid=str(installation_id))
-        
-        if installation:
-            if UserInformation.savedinstallations.contains(installation):
-                UserInformation.savedinstallations.add(installation)
-            else:
-                UserInformation.savedinstallations.remove(installation)
-    return HttpResponse(installation.name)
 
-def home(request):
-   context = RequestContext(request,
-                           {'request': request,
-                            'user': request.user})
-   return render_to_response('artly/login-home.html',
-                             context_instance=context)
+

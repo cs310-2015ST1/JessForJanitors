@@ -10,7 +10,7 @@ $(document).ready(function() {
 
             $(':checkbox', this).trigger('click');
 
-            index = parseInt($(':checkbox', this).attr("data-installation-id").substring(4) - 1);
+            index = parseInt($(':checkbox', this).attr("data-installation-id").substring(4)) - 1;
 
             if(checked) {
                 //$(".heart", this).addClass('glyphicon-heart').removeClass('glyphicon-heart-empty');
@@ -20,20 +20,7 @@ $(document).ready(function() {
                 markers[index].setIcon(normalIcon());
             }
 
-            var installation_name;
-
-            installation_name = $(':checkbox', this).attr("data-installation-name");
-            installation_id = $(':checkbox', this).attr("data-installation-id");
-
-            $.get('/artly/click_installation/', {name: installation_name}, function(data){
-               /*Return name back just for testing purposes*/
-               $('#installation_name').html(data);
-            });
-
-            $.get('/artly/click_save/', {id: installation_id}, function(data){
-                /*Return name back just for testing purposes*/
-                $('#installation_id').html(data);
-            });
+            updateSelectedCount();
          }
     });
 
@@ -46,23 +33,7 @@ $(document).ready(function() {
             checked = false;
         }
 
-        sortCheck();
+        sortByCheckbox();
     });
-
-    $('#markers_info .marker').hover(
-      // mouse in
-      function () {
-        // first we need to know which <div class="marker"></div> we hovered
-        var index = $('#markers_info .marker').index(this);
-        markers[index].setIcon(highlightedIcon());
-      },
-      // mouse out
-      function () {
-        // first we need to know which <div class="marker"></div> we hovered
-        var index = $('#markers_info .marker').index(this);
-        markers[index].setIcon(normalIcon());
-      }
-
-    );
 
 });

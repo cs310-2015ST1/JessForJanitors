@@ -41,14 +41,20 @@
                 new google.maps.LatLng(49.322768, -123.006497)
             );
 
-            var tableHeight = Math.max(window.innerHeight - 200, 300);
+            var tableHeight;
 
             //alert(tableHeight + "px");
 
             function createTable() {
                     /* Make table visible */
-                    var list = document.getElementById("example");
+                    var list = document.getElementById("right");
                     list.style.visibility = "visible";
+
+                    if (tableHeight == null) {
+                        tableHeight = Math.max(window.innerHeight - 200, 300);
+                    } else {
+                        tableHeight = $('#map-canvas').height();
+                    }
 
                     /* Initialize data table */
                     table = $("#example").dataTable( {
@@ -66,7 +72,12 @@
                                 { "orderable": false },
                                 { "orderable": false }],
                     "columnDefs": [
-                        { "orderable": false, "targets": 0 }
+                        { "width": "0%", "targets": 0 },
+                        { "width": "10%", "targets": 1 },
+                        { "width": "50%", "targets": 2 },
+                        { "width": "30%", "targets": 3 },
+                        { "width": "10%", "targets": 4 },
+                        { "width": "10%", "targets": 5 }
                     ],
                     "language": {
                         "sSearch": "",
@@ -75,6 +86,9 @@
                     } );
 
                     $('div.dataTables_filter input').attr('placeholder', 'Search...');
+                    sortByCheckbox();
+
+                    updateSelectedCount();
             }
 
             $(window).bind('resize', function () {
@@ -84,15 +98,21 @@
             });
 
             function centerMap() {
-                map.setCenter(currentLocation);
+                map.panTo(currentLocation);
             }
 
             function init() {
                 map = new google.maps.Map(document.getElementById('map-canvas'), {zoom: 12, minZoom: 10, maxZoom: 16});
                 if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(function (position) {
-                        currentLocation = new google.maps.LatLng(position.coords.latitude,
-                                position.coords.longitude);
+
+                        if (position.coords.latitude > 49.186972 && position.coords.latitude < 49.322768 &&
+                                position.coords.longitude > -123.006497 && position.coords.longitude < -123.006497) {
+                            currentLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+                        } else {
+                            currentLocation = new google.maps.LatLng(49.2508548, -123.1174762);
+                        }
+
                         var pos = new google.maps.LatLng(position.coords.latitude,
                                 position.coords.longitude);
                         var infowindow = new google.maps.InfoWindow({
@@ -205,6 +225,17 @@
                 createTable();
             }
 
+            function loadFavourites(){
+
+                {% if user and not user.is_anonymous %}
+                    {% for artinstallation in savedinstallations %}
+                        $("#favourite-{{artinstallation.locationid}}").addClass('glyphicon-heart').removeClass('glyphicon-heart-empty');
+                    {% endfor %}
+                {% endif %}
+
+                createTable();
+            }
+
             function showAll() {
             	{% for artinstallation in artinstallations %}
     	        	$('.{{artinstallation.locationid}}').show();
@@ -253,11 +284,7 @@
 
                 {% endfor %}
                 updateListView(50);
-                test();
-            }
-
-            function test() {
-                alert(markers[347].position + '');
+                loadFavourites();
             }
 
             function normalIcon() {
@@ -340,12 +367,36 @@
 			RadiusWidget.prototype.distance_changed = function() {
   				this.set('radius', this.get('distance') * 1000);
 			};
+
+			function deselectAll() {
+			    $('tr').filter(':has(:checkbox:checked)').each(function() {
+                    $(this).removeClass("success");
+                });
+
+      			var rowCollection = table.$(".checkbox:checked", {"page": "all"});
+
+      			var index;
+
+                for (i = 0; i < rowCollection.length; i++) {
+                    index = parseInt(rowCollection[i].getAttribute("data-installation-id").substring(4)) - 1;
+                    markers[index].setIcon(normalIcon());
+                    rowCollection[i].checked = false;
+                }
+
+                updateSelectedCount();
+
+                createTable();
+			}
+
 			
             /**
  			* Set the distance of the circle based on the dropdown.
  			*/
             function changeRadius(value) {
-      			//alert("in change radius");
+
+      			deselectAll();
+
+      			centerMap();
       			updateListView(value);
       			distanceWidget.set('distance', value);
       		}
@@ -370,16 +421,88 @@
                 } );
             }
 
+            function sortByCheckbox(){
+                var table = $('#example').DataTable();
+                table
+                    .order( [ 0, 'desc' ], [ 3, 'asc' ] )
+                    .draw();
+            }
+
             
             function saveSelected() {
-				var selectedCount = 0;
-            	{% for artinstallation in artinstallations %}
-            		{% if artinstallation.selected %}
-            			UserInformation.savedinstallations.add(artinstallation);
-            			selectedCount++
-            		{% endif %}
-            	{% endfor %}
-            	alert('Success! ' + selectedCount + ' locations saved.');
+                {% if user and not user.is_anonymous %}
+                	var selectedCount = 0;
+
+                    var table = $('#example').DataTable();
+                    var rowCollection = table.$(".checkbox:checked", {"page": "all"});
+
+                    for (i = 0; i < rowCollection.length; i++) {
+                        var locationid = rowCollection[i].getAttribute('data-installation-id');
+
+                        $.post('/artly/toggle_favourite/', {locationid: locationid});
+
+                        if  ($("#favourite-"+locationid).hasClass('glyphicon-heart-empty')){
+                            $("#favourite-"+locationid).addClass('glyphicon-heart').removeClass('glyphicon-heart-empty');
+                        }
+                        else{
+                            $("#favourite-"+locationid).addClass('glyphicon-heart-empty').removeClass('glyphicon-heart');
+                        }
+
+                        selectedCount+=1;
+                    }
+
+                    alert('Success! ' + selectedCount + ' locations updated to Favourites.');
+                {% else %}
+                    alert('You need to log into Artly with your Google Account to access this feature.');
+                {% endif %}
+            }
+
+            function post(path, params, method) {
+                method = method || "post"; // Set method to post by default if not specified.
+
+                // The rest of this code assumes you are not using a library.
+                // It can be made less wordy if you use one.
+                var form = document.createElement("form");
+                form.setAttribute("method", method);
+                form.setAttribute("action", path);
+
+                for(var key in params) {
+                    if(params.hasOwnProperty(key)) {
+                        var hiddenField = document.createElement("input");
+                        hiddenField.setAttribute("type", "hidden");
+                        hiddenField.setAttribute("name", key);
+                        hiddenField.setAttribute("value", params[key]);
+
+                        form.appendChild(hiddenField);
+                    }
+                }
+
+                document.body.appendChild(form);
+                form.submit();
+            }
+
+            function updateSelectedCount() {
+                var selectedRows = table.$(".checkbox:checked", {"page": "all"}).length;
+                var count = $('#example tr:visible').length - 1;
+                var selectedOf = selectedRows + " of " + count + " selected";
+                $('#counts').html(selectedOf);
+            }
+
+            function showFavourites() {
+
+                showAll();
+
+                {% for artinstallation in artinstallations %}
+
+                    var heart =  $('#favourite-{{artinstallation.locationid}}').attr('class');
+
+                    if (heart == "heart glyphicon glyphicon-heart-empty") {
+                        $('.{{artinstallation.locationid}}').hide();
+                    }
+
+                {% endfor %}
+
+                updateSelectedCount();
             }
 
 
@@ -399,7 +522,7 @@
                     <div id="space1"></div>
                         <button id="centerMap" type="button" class="btn btn-default btn-lg" onclick="centerMap()">
                         <center><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Center Map</center>
-                    </button>
+                        </button>
 
                     <!-- Split button -->
                     <div class="btn-group" id="radius-dropdown">
@@ -415,6 +538,8 @@
                           <li onclick="changeRadius(3)"><a>3 km</a></li>
                           <li onclick="changeRadius(4)"><a>4 km</a></li>
                           <li onclick="changeRadius(5)"><a>5 km</a></li>
+                          <li class="dropdown-header"></li>
+                          <li onclick="showFavourites()"><a>Show Favourites</a></li>
                       </ul>
                     </div>
                 </div>
@@ -444,53 +569,67 @@
                         <th width="0%" id="check-column"></th>
                         <th width="10%"><center><span class="glyphicon glyphicon-heart" aria-hidden="true"></center></th>
                         <th width="50%">Name</th>
-                        <th width="25%"><center>Distance (m)</center></th>
+                        <th width="25%"><center>Meters</center></th>
                         <th width="15%"><center>Info</center></th>
-                        <th width="8%"><a href="https://twitter.com/intent/tweet?text=I'm using Artly to discover Vancouver's public art!" target="_blank"><img src="{% static 'images/Twitter_logo_blue.png' %}" width="20" alt="Tweet"/></a></th>
+                        <th width="8%"><center><a href="https://twitter.com/intent/tweet?text=I'm using Artly to discover Vancouver's public art!" target="_blank"><img src="{% static 'images/Twitter_logo_blue.png' %}" width="20" alt="Tweet"/></a></center></th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for artinstallation in artinstallations %}
                     <tr class="{{artinstallation.locationid}}" data-installation-id="{{artinstallation.locationid}}">
-                        <td id="check-column"><center><input type="checkbox" id="select" data-installation-name="{{ artinstallation.name }}" data-installation-id="{{ artinstallation.locationid }}" /></center></td>
+                        <td id="check-column"><center><input type="checkbox" class="checkbox" id="select" data-installation-name="{{ artinstallation.name }}" data-installation-id="{{ artinstallation.locationid }}" /></center></td>
 <!--                         if UserInformation.objects.filter(savedinstallations__locationid = artinstallation.locationid) -->
 <!--                         	<td><img src="http://orig15.deviantart.net/8047/f/2013/245/d/4/little_pixel_heart_by_kawiku-d6ksnjh.gif"></td> -->
 <!--                         else -->
 <!--                         	<td></td> -->
 <!--                         endif -->
-						<td><center><i class="heart glyphicon glyphicon-heart-empty" aria-hidden="true"></i></center></td>
+						<td><center><i id="favourite-{{artinstallation.locationid}}" class="heart glyphicon glyphicon-heart-empty" aria-hidden="true"></i></center></td>
                         <td>{{ artinstallation.name }}</td>
                         <td><center class="distance-{{artinstallation.locationid}}"></center></td>
                         <td><a href="{{ artinstallation.url }}" target="_blank" id="no-check"><center><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></center></a></td>
-                        <td><a href="{{ artinstallation.twitterurl }}" target="_blank" id="no-check"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></td>
+                        <td><center><a href="{{ artinstallation.twitterurl }}" target="_blank" id="no-check"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></center></td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
 
             </div>
+
+                <div id="space-list-bar"></div>
+
+                <div id="bar-container">
+
+                    <div id="fav-div">
+                <button id="fav-butt" type="button" class="btn btn-default btn-lg" onclick="saveSelected()">
+                        <center><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Toggle Favourite</center>
+                </button>
+                </div>
+
+                    <div id="denzel-space"></div>
+
+                <div id="denzel-div">
+                <button id="denzel-butt" type="button" class="btn btn-default btn-lg" onclick="deselectAll()">
+                        <center><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Deselect All</center>
+                </button>
+                </div>
+
+                    <div id="counts-space"></div>
+
+                    <div id="count-div">
+                        <div id="count-space-above"></div>
+                        <p id="counts"></p>
+                    </div>
+
+                </div>
+
             </div>
             </div>
             {% else %}
                 <strong>There are no installations to present.</strong>
             {% endif %}
-        </div>
-        <div id="space"></div>
-        <div id="lower-bar">
-            <div id="bar-container">
 
-            <div id="fav-butt">
-                <button type="button" onclick="saveSelected()">Favourite</button>
-            </div>
-        </div>
-        </div>
-
-        <!-- for testing purposes-->
-            <div id="selection">
-                <span id="installation_name"></span><i> was clicked</i>
-                <span id="installation_id"></span><i> was added to your favourites</i>
-            </div>
-            </div>
+    <div id="top-bar"></div>
+    <div id="bottom-bar"></div>
 
     </body>
 </html>
