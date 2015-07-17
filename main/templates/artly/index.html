@@ -377,6 +377,13 @@
                 } );
             }
 
+            function sortByCheckbox(){
+                var table = $('#example').DataTable();
+                table
+                    .order( [ 0, 'desc' ], [ 3, 'asc' ] )
+                    .draw();
+            }
+
             
             function saveSelected() {
 				var selectedCount = 0;
