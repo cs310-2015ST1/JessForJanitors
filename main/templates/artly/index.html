@@ -392,14 +392,21 @@
 
             
             function saveSelected() {
-				var selectedCount = 0;
-            	{% for artinstallation in artinstallations %}
-            		{% if artinstallation.selected %}
-            			UserInformation.savedinstallations.add(artinstallation);
-            			selectedCount++
-            		{% endif %}
-            	{% endfor %}
-            	alert('Success! ' + selectedCount + ' locations saved.');
+                {% if user and not user.is_anonymous %}
+                	var selectedCount = 0;
+
+                    var table = $('#example').DataTable();
+                    var rowCollection = table.$(".checkbox:checked", {"page": "all"});
+
+                    for (i = 0; i < rowCollection.length; i++) {
+                        alert(rowCollection[i].getAttribute('data-installation-id'));
+                        selectedCount+=1;
+                    }
+
+                    alert('Success! ' + selectedCount + ' locations updated to Favourites.');
+                {% else %}
+                    alert('You need to log into Artly with your Google Account to access this feature.');
+                {% endif %}
             }
 
 
@@ -472,7 +479,7 @@
                 <tbody>
                 {% for artinstallation in artinstallations %}
                     <tr class="{{artinstallation.locationid}}" data-installation-id="{{artinstallation.locationid}}">
-                        <td id="check-column"><center><input type="checkbox" id="select" data-installation-name="{{ artinstallation.name }}" data-installation-id="{{ artinstallation.locationid }}" /></center></td>
+                        <td id="check-column"><center><input type="checkbox" class="checkbox" id="select" data-installation-name="{{ artinstallation.name }}" data-installation-id="{{ artinstallation.locationid }}" /></center></td>
 <!--                         if UserInformation.objects.filter(savedinstallations__locationid = artinstallation.locationid) -->
 <!--                         	<td><img src="http://orig15.deviantart.net/8047/f/2013/245/d/4/little_pixel_heart_by_kawiku-d6ksnjh.gif"></td> -->
 <!--                         else -->
@@ -508,7 +515,6 @@
         <!-- for testing purposes-->
             <div id="selection">
                 <span id="installation_name"></span><i> was clicked</i>
-                <span id="installation_id"></span><i> was added to your favourites</i>
             </div>
             </div>
 
