@@ -58,7 +58,6 @@ INSTALLED_APPS = (
     'googleapiclient',
     'social.apps.django_app.default',
     'django.utils.unittest',
-    'django.test.TestCase',
 )
 
 MIDDLEWARE_CLASSES = (
