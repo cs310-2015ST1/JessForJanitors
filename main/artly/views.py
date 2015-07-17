@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 from artly.models import ArtInstallation
 from artly.models import ArtlyUser
@@ -29,7 +30,5 @@ def map(request):
 
     return render(request, 'artly/map.html', context_dict)
 
-"""
-def click_toggle_favourites(request):
-    return render(request)
-"""
+
+

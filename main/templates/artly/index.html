@@ -433,7 +433,8 @@
                     var rowCollection = table.$(".checkbox:checked", {"page": "all"});
 
                     for (i = 0; i < rowCollection.length; i++) {
-                        alert(rowCollection[i].getAttribute('data-installation-id'));
+                        post('/artly/toggle_favourites/', {locationid: rowCollection[i].getAttribute('data-installation-id')});
+                        //alert(rowCollection[i].getAttribute('data-installation-id'));
                         selectedCount+=1;
                     }
 
@@ -441,6 +442,30 @@
                 {% else %}
                     alert('You need to log into Artly with your Google Account to access this feature.');
                 {% endif %}
+            }
+
+            function post(path, params, method) {
+                method = method || "post"; // Set method to post by default if not specified.
+
+                // The rest of this code assumes you are not using a library.
+                // It can be made less wordy if you use one.
+                var form = document.createElement("form");
+                form.setAttribute("method", method);
+                form.setAttribute("action", path);
+
+                for(var key in params) {
+                    if(params.hasOwnProperty(key)) {
+                        var hiddenField = document.createElement("input");
+                        hiddenField.setAttribute("type", "hidden");
+                        hiddenField.setAttribute("name", key);
+                        hiddenField.setAttribute("value", params[key]);
+
+                        form.appendChild(hiddenField);
+                    }
+                }
+
+                document.body.appendChild(form);
+                form.submit();
             }
 
 
