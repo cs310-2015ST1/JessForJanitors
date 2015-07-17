@@ -204,16 +204,17 @@ table th {
 
 #counts-space {
 	float: left;
-	width: 32px;
+	width: 70px;
 	height: 30px;
 }
 
 #count-div {
-	top: 5px;
+	top: 0px;
+	width: 150px;
 	float: left;
 }
 
 #count-space-above {
-	width: 20px;
-	height: 5px;
+	width: 150px;
+	height: 7px;
 }
