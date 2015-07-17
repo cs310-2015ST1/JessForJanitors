@@ -8,9 +8,9 @@ pip install python-social-auth
 
 **Links to deployed app:**
 
+Works best in Chrome!
+
 http://helisquinde.pythonanywhere.com/artly/
-  - Username: jessforjanitors
-  - Password: jessforjanitors
 
 http://helisquinde.pythonanywhere.com/admin/
   - Username: username
