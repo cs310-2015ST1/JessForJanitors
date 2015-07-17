@@ -6,7 +6,4 @@ urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
     url(r'^map/$', views.map, name='map'),
     url(r'^populate/$', populate_artly.populate, name='populate'),
-"""
-    url(r'^savefavourites/$', views.)
-"""
     )
