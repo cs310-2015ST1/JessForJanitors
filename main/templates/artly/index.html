@@ -437,8 +437,16 @@
                     var rowCollection = table.$(".checkbox:checked", {"page": "all"});
 
                     for (i = 0; i < rowCollection.length; i++) {
-                        post('/artly/toggle_favourites/', {locationid: rowCollection[i].getAttribute('data-installation-id')});
-                        //alert(rowCollection[i].getAttribute('data-installation-id'));
+                        var locationid = rowCollection[i].getAttribute('data-installation-id');
+                        $.post('/artly/toggle_favourite/', {locationid: locationid});
+
+                        if  ($("#favourite-"+locationid).hasClass('glyphicon-heart-empty')){
+                            $("#favourite-"+locationid).addClass('glyphicon-heart').removeClass('glyphicon-heart-empty');
+                        }
+                        else{
+                            $("#favourite-"+locationid).addClass('glyphicon-heart-empty').removeClass('glyphicon-heart');
+                        }
+
                         selectedCount+=1;
                     }
 
@@ -589,14 +597,14 @@
                 <div id="bar-container">
                 <div id="fav-div">
                 <button id="fav-butt" type="button" class="btn btn-default btn-lg" onclick="saveSelected()">
-                        <center><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Favourite</center>
+                        <center><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Toggle Favourite</center>
                 </button>
                 </div>
 
                     <div id="fav-space"></div>
 
                 <div id="un-fav-div">
-                <button id="un-fav-butt" type="button" class="btn btn-default btn-lg" onclick="">
+                <button id="un-fav-butt" type="button" class="btn btn-default btn-lg" onclick="alert('Functionality not added yet; use Toggle Favourites button to delete')">
                         <center><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span> Unfavourite</center>
                 </button>
                 </div>
