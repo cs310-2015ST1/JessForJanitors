@@ -438,6 +438,7 @@
 
                     for (i = 0; i < rowCollection.length; i++) {
                         var locationid = rowCollection[i].getAttribute('data-installation-id');
+
                         $.post('/artly/toggle_favourite/', {locationid: locationid});
 
                         if  ($("#favourite-"+locationid).hasClass('glyphicon-heart-empty')){
