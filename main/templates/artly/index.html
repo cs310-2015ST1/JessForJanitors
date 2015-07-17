@@ -41,7 +41,7 @@
                 new google.maps.LatLng(49.322768, -123.006497)
             );
 
-            var tableHeight = Math.max(window.innerHeight - 200, 300);
+            var tableHeight;
 
             //alert(tableHeight + "px");
 
@@ -49,6 +49,12 @@
                     /* Make table visible */
                     var list = document.getElementById("example");
                     list.style.visibility = "visible";
+
+                    if (tableHeight == null) {
+                        tableHeight = Math.max(window.innerHeight - 200, 300);
+                    } else {
+                        tableHeight = $('#map-canvas').height();
+                    }
 
                     /* Initialize data table */
                     table = $("#example").dataTable( {
