@@ -455,6 +455,8 @@
                 {% else %}
                     alert('You need to log into Artly with your Google Account to access this feature.');
                 {% endif %}
+
+                deselectAll();
             }
 
             function post(path, params, method) {
