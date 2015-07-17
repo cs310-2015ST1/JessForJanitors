@@ -10,7 +10,7 @@ $(document).ready(function() {
 
             $(':checkbox', this).trigger('click');
 
-            index = parseInt($(':checkbox', this).attr("data-installation-id").substring(4) - 1);
+            index = parseInt($(':checkbox', this).attr("data-installation-id").substring(4)) - 1;
 
             if(checked) {
                 //$(".heart", this).addClass('glyphicon-heart').removeClass('glyphicon-heart-empty');
