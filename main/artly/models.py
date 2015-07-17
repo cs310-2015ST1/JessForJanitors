@@ -25,4 +25,5 @@ def create_artly_user(sender, **kwargs):
     if kwargs["created"]:
         up = ArtlyUser(user=user)
         up.save()
+
 post_save.connect(create_artly_user, sender=User)

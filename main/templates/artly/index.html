@@ -205,6 +205,17 @@
                 createTable();
             }
 
+            function loadFavourites(){
+
+                {% if user and not user.is_anonymous %}
+                    {% for artinstallation in savedinstallations %}
+                        $("#favourite-{{artinstallation.locationid}}").addClass('glyphicon-heart').removeClass('glyphicon-heart-empty');
+                    {% endfor %}
+                {% endif %}
+
+                createTable();
+            }
+
             function showAll() {
             	{% for artinstallation in artinstallations %}
     	        	$('.{{artinstallation.locationid}}').show();
@@ -253,11 +264,7 @@
 
                 {% endfor %}
                 updateListView(50);
-                test();
-            }
-
-            function test() {
-                alert(markers[347].position + '');
+                loadFavourites();
             }
 
             function normalIcon() {
@@ -458,7 +465,7 @@
 <!--                         else -->
 <!--                         	<td></td> -->
 <!--                         endif -->
-						<td><center><i class="heart glyphicon glyphicon-heart-empty" aria-hidden="true"></i></center></td>
+						<td><center><i id="favourite-{{artinstallation.locationid}}" class="heart glyphicon glyphicon-heart-empty" aria-hidden="true"></i></center></td>
                         <td>{{ artinstallation.name }}</td>
                         <td><center class="distance-{{artinstallation.locationid}}"></center></td>
                         <td><a href="{{ artinstallation.url }}" target="_blank" id="no-check"><center><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></center></a></td>

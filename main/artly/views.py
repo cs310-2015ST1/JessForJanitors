@@ -11,7 +11,8 @@ def index(request):
     # Order the categories by name
     # Place the list in our context_dict dictionary which will be passed to the template engine.
     art_list = ArtInstallation.objects.order_by('name')
-    saved_list = ArtlyUser.objects.order_by('name')
+    profile = request.user.artlyuser
+    saved_list = profile.savedinstallations.all()
     context_dict = {'artinstallations': art_list, 'savedinstallations': saved_list}
 #     context_dict2 = {'savedinstallations': saved_list}
 
