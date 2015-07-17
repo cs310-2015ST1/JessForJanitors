@@ -66,7 +66,12 @@
                                 { "orderable": false },
                                 { "orderable": false }],
                     "columnDefs": [
-                        { "orderable": false, "targets": 0 }
+                        { "width": "0%", "targets": 0 },
+                        { "width": "10%", "targets": 1 },
+                        { "width": "50%", "targets": 2 },
+                        { "width": "30%", "targets": 3 },
+                        { "width": "10%", "targets": 4 },
+                        { "width": "10%", "targets": 5 }
                     ],
                     "language": {
                         "sSearch": "",
@@ -459,7 +464,7 @@
                         <th width="0%" id="check-column"></th>
                         <th width="10%"><center><span class="glyphicon glyphicon-heart" aria-hidden="true"></center></th>
                         <th width="50%">Name</th>
-                        <th width="25%"><center>Distance (m)</center></th>
+                        <th width="25%"><center>Meters</center></th>
                         <th width="15%"><center>Info</center></th>
                         <th width="8%"><a href="https://twitter.com/intent/tweet?text=I'm using Artly to discover Vancouver's public art!" target="_blank"><img src="{% static 'images/Twitter_logo_blue.png' %}" width="20" alt="Tweet"/></a></th>
                     </tr>
