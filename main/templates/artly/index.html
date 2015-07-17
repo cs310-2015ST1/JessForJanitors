@@ -47,7 +47,7 @@
 
             function createTable() {
                     /* Make table visible */
-                    var list = document.getElementById("example");
+                    var list = document.getElementById("right");
                     list.style.visibility = "visible";
 
                     if (tableHeight == null) {
@@ -374,6 +374,8 @@
                     markers[index].setIcon(normalIcon());
                     rowCollection[i].checked = false;
                 }
+
+                createTable();
 			}
 
 			
@@ -452,7 +454,7 @@
                     <div id="space1"></div>
                         <button id="centerMap" type="button" class="btn btn-default btn-lg" onclick="centerMap()">
                         <center><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span> Center Map</center>
-                    </button>
+                        </button>
 
                     <!-- Split button -->
                     <div class="btn-group" id="radius-dropdown">
@@ -499,7 +501,7 @@
                         <th width="50%">Name</th>
                         <th width="25%"><center>Meters</center></th>
                         <th width="15%"><center>Info</center></th>
-                        <th width="8%"><a href="https://twitter.com/intent/tweet?text=I'm using Artly to discover Vancouver's public art!" target="_blank"><img src="{% static 'images/Twitter_logo_blue.png' %}" width="20" alt="Tweet"/></a></th>
+                        <th width="8%"><center><a href="https://twitter.com/intent/tweet?text=I'm using Artly to discover Vancouver's public art!" target="_blank"><img src="{% static 'images/Twitter_logo_blue.png' %}" width="20" alt="Tweet"/></a></center></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -515,34 +517,50 @@
                         <td>{{ artinstallation.name }}</td>
                         <td><center class="distance-{{artinstallation.locationid}}"></center></td>
                         <td><a href="{{ artinstallation.url }}" target="_blank" id="no-check"><center><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span></center></a></td>
-                        <td><a href="{{ artinstallation.twitterurl }}" target="_blank" id="no-check"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></td>
+                        <td><center><a href="{{ artinstallation.twitterurl }}" target="_blank" id="no-check"><span class="glyphicon glyphicon-menu-right" aria-hidden="true"></span></a></center></td>
                     </tr>
                 {% endfor %}
                 </tbody>
             </table>
 
             </div>
+
+                <div id="space-list-bar"></div>
+
+                <div id="bar-container">
+                <div id="fav-div">
+                <button id="fav-butt" type="button" class="btn btn-default btn-lg" onclick="saveSelected()">
+                        <center><span class="glyphicon glyphicon-heart" aria-hidden="true"></span> Favourite</center>
+                </button>
+                </div>
+
+                    <div id="fav-space"></div>
+
+                <div id="un-fav-div">
+                <button id="un-fav-butt" type="button" class="btn btn-default btn-lg" onclick="">
+                        <center><span class="glyphicon glyphicon-heart-empty" aria-hidden="true"></span> Unfavourite</center>
+                </button>
+                </div>
+
+                    <div id="denzel-space"></div>
+
+                <div id="denzel-div">
+                <button id="denzel-butt" type="button" class="btn btn-default btn-lg" onclick="deselectAll()">
+                        <center><span class="glyphicon glyphicon-remove" aria-hidden="true"></span> Deselect All</center>
+                </button>
+                </div>
+
+                </div>
+
+
             </div>
             </div>
             {% else %}
                 <strong>There are no installations to present.</strong>
             {% endif %}
-        </div>
-        <div id="space"></div>
-        <div id="lower-bar">
-            <div id="bar-container">
 
-            <div id="fav-butt">
-                <button type="button" onclick="saveSelected()">Favourite</button>
-            </div>
-        </div>
-        </div>
-
-        <!-- for testing purposes-->
-            <div id="selection">
-                <span id="installation_name"></span><i> was clicked</i>
-            </div>
-            </div>
+    <div id="top-bar"></div>
+    <div id="bottom-bar"></div>
 
     </body>
 </html>
