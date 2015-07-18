@@ -41,7 +41,7 @@
 }
 
 #map-canvas {
-    height: calc(100vh - 200px); /*readjusts based on screen size*/
+    height: calc(100vh - 206px); /*readjusts based on screen size*/
     min-height: 300px;
     max-width: none;
 }
@@ -83,7 +83,7 @@
 
 #denzel-space {
 	float: left;
-	width: 38px;
+	width: 28px;
 	height: 30px;
 }
 
@@ -116,7 +116,7 @@
 }
 
 #upper-bar {
-	height: 100px;
+	height: 103px;
 	width: 100%;
 }
 
@@ -204,7 +204,7 @@ table th {
 
 #counts-space {
 	float: left;
-	width: 60px;
+	width: 65px;
 	height: 30px;
 }
 

@@ -51,9 +51,9 @@
                     list.style.visibility = "visible";
 
                     if (tableHeight == null) {
-                        tableHeight = Math.max(window.innerHeight - 200, 300);
+                        tableHeight = Math.max(window.innerHeight - 206, 300);
                     } else {
-                        tableHeight = $('#map-canvas').height();
+                        tableHeight = $('#map-canvas').height() + 6;
                     }
 
                     /* Initialize data table */
@@ -93,7 +93,7 @@
 
             $(window).bind('resize', function () {
                 centerMap();
-                $(".dataTables_scrollBody").height($('#map-canvas').height());
+                $(".dataTables_scrollBody").height($('#map-canvas').height() + 6);
                 table.fnDraw();
             });
 
