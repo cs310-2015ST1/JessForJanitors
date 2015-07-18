@@ -1,5 +1,6 @@
-import xml.etree.ElementTree as ET
 from artinfo import ArtInfo
+import xml.etree.ElementTree as ET
+
 
 
 def parseart(kml):

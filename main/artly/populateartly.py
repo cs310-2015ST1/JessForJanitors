@@ -1,12 +1,10 @@
 import zipfile
 import urllib
-import xml.etree.ElementTree as ET
-#from test.test_xml_etree import getchildren
+from test.test_xml_etree import getchildren
 import os
 from django.http import HttpResponse
 import django
 from models import ArtInstallation
-import artinfo
 from parsertester import parseart
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'main.settings')
